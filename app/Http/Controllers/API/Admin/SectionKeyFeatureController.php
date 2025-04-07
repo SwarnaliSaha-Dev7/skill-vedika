@@ -84,10 +84,94 @@ class SectionKeyFeatureController extends Controller
                 // }
             }
 
+
+            //lebel1_image upload
+            $fileName = null;
+            $lebel1_image_path = null;
+            if ($request->hasFile('lebel1_image')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('lebel1_image')->getClientOriginalName();
+                $request->lebel1_image->move($path, $fileName);
+                $lebel1_image_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->lebel1_image) {
+                    $this->delete_file($checkData->lebel1_image);
+                }
+            } else {
+                if($request->lebel1_image){
+                    $lebel1_image_path = $request->lebel1_image;
+                    // $lebel1_image_path = $checkData->lebel1_image;
+                }
+                // else{
+                //     $lebel1_image_path = null;
+                // }
+            }
+
+            //lebel2_image upload
+            $fileName = null;
+            $lebel2_image_path = null;
+            if ($request->hasFile('lebel2_image')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('lebel2_image')->getClientOriginalName();
+                $request->lebel2_image->move($path, $fileName);
+                $lebel2_image_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->lebel2_image) {
+                    $this->delete_file($checkData->lebel2_image);
+                }
+            } else {
+                if($request->lebel2_image){
+                    $lebel2_image_path = $request->lebel2_image;
+                    // $lebel2_image_path = $checkData->lebel2_image;
+                }
+                // else{
+                //     $lebel2_image_path = null;
+                // }
+            }
+
+            //lebel3_image upload
+            $fileName = null;
+            $lebel3_image_path = null;
+            if ($request->hasFile('lebel3_image')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('lebel3_image')->getClientOriginalName();
+                $request->lebel3_image->move($path, $fileName);
+                $lebel3_image_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->lebel3_image) {
+                    $this->delete_file($checkData->lebel3_image);
+                }
+            } else {
+                if($request->lebel3_image){
+                    $lebel3_image_path = $request->lebel3_image;
+                    // $lebel3_image_path = $checkData->lebel3_image;
+                }
+                // else{
+                //     $lebel3_image_path = null;
+                // }
+            }
+
+            //lebel4_image upload
+            $fileName = null;
+            $lebel4_image_path = null;
+            if ($request->hasFile('lebel4_image')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('lebel4_image')->getClientOriginalName();
+                $request->lebel4_image->move($path, $fileName);
+                $lebel4_image_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->lebel4_image) {
+                    $this->delete_file($checkData->lebel4_image);
+                }
+            } else {
+                if($request->lebel4_image){
+                    $lebel4_image_path = $request->lebel4_image;
+                    // $lebel4_image_path = $checkData->lebel4_image;
+                }
+                // else{
+                //     $lebel4_image_path = null;
+                // }
+            }
+
             $updatedData = [
                 'title' => $request->title,
                 'desc' => $request->desc,
-                'desc_image' => $desc_image_path,
                 'lebel1' => $request->lebel1,
                 'content1' => $request->content1,
                 'lebel2' => $request->lebel2,
@@ -96,11 +180,17 @@ class SectionKeyFeatureController extends Controller
                 'content3' => $request->content3,
                 'lebel4' => $request->lebel4,
                 'content4' => $request->content4,
+
+                'desc_image' => $desc_image_path,
+                'lebel1_image' => $lebel1_image_path,
+                'lebel2_image' => $lebel2_image_path,
+                'lebel3_image' => $lebel3_image_path,
+                'lebel4_image' => $lebel4_image_path,
             ];
 
             $checkData->update($updatedData);
 
-            return sendSuccessResponse('Section Key Feature details updated successfully.', '');
+            return sendSuccessResponse('Section Key Feature details updated successfullyr45.', '');
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }

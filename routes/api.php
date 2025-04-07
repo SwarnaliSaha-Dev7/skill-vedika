@@ -59,6 +59,7 @@ Route::get('/blog/details/{slug}', [BlogController::class, 'details']);
 Route::post('/blog/contact', [BlogController::class, 'blogContact']);
 
 //=================== Content Pages =========================
+Route::get('/page/home-page', [CMSController::class, 'homePage']);
 Route::get('/page/about-us', [CMSController::class, 'aboutUsPage']);
 Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditionPage']);
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);

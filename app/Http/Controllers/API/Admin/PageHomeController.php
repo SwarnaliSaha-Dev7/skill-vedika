@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\API\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Validator;
 use App\Models\PageHome;
+use Illuminate\Http\Request;
+use App\Models\WebsiteReview;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use App\Http\Controllers\API\Exception;
-use Validator;
 
 class PageHomeController extends Controller
 {
@@ -29,11 +30,18 @@ class PageHomeController extends Controller
     {
         try {
 
-            $data = PageHome::first();
+            $PageHomeData = PageHome::first();
 
-            if (!$data) {
+            if (!$PageHomeData) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
+
+            $reviews = WebsiteReview::select('id','review','created_at','updated_at')
+                                    ->get();
+
+            $data['homePageData'] = $PageHomeData;
+            $data['reviews'] = $reviews;
+
             return sendSuccessResponse('Home page details fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
@@ -118,6 +126,24 @@ class PageHomeController extends Controller
             ];
 
             $checkData->update($updatedData);
+
+            //store reviews
+            $reviews = json_decode($request->reviews);
+            //delete all previous reviews
+            WebsiteReview::truncate();
+
+            //store review
+            $now = \Carbon\Carbon::now();
+            $reviews = array_map(function ($text) use ($now){
+                return [
+                    'review' => $text,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+
+            }, $reviews);
+
+            WebsiteReview::insert($reviews);
 
             return sendSuccessResponse('Home page details updated successfully.', '');
         } catch (\Throwable $th) {
