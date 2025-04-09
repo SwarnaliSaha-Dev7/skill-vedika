@@ -12,7 +12,11 @@ use Illuminate\Http\Request;
 use App\Models\PageContactUs;
 use App\Models\WebsiteReview;
 use App\Models\SectionKeyFeature;
+use App\Models\SettingManagement;
+use App\Models\PopularTag;
+use App\Models\SectionLiveFreeDemo;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\PageTermsAndCondition;
 use App\Http\Controllers\API\Exception;
@@ -26,11 +30,18 @@ class CMSController extends Controller
     {
         try {
 
-            $data = PageAboutUs::first();
+            $pageContent = PageAboutUs::first();
 
-            if (!$data) {
+            if (!$pageContent) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
+
+            $data['pageContent'] = $pageContent;
+            $data['sectionKeyFeature'] = SectionKeyFeature::first();
+            $data['reviews'] = WebsiteReview::select('id','review','created_at','updated_at')->get();
+
+            $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
+
             return sendSuccessResponse('About Us page details fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
@@ -41,11 +52,15 @@ class CMSController extends Controller
     {
         try {
 
-            $data = PageTermsAndCondition::first();
+            $pageContent = PageTermsAndCondition::first();
 
-            if (!$data) {
+            if (!$pageContent) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
+
+            $data['pageContent'] = $pageContent;
+            $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
+
             return sendSuccessResponse('Terms and Conditions page details fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
@@ -56,11 +71,15 @@ class CMSController extends Controller
     {
         try {
 
-            $data = PageContactUs::first();
+            $pageContent = PageContactUs::first();
 
-            if (!$data) {
+            if (!$pageContent) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
+
+            $data['pageContent'] = $pageContent;
+            $data['sectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
+
             return sendSuccessResponse('Contact Us page details fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
@@ -85,46 +104,124 @@ class CMSController extends Controller
     {
         try {
 
-            $PageHomeData = PageHome::first();
+            $pageContent = PageHome::first();
 
-            if (!$PageHomeData) {
+            if (!$pageContent) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
 
-            $data['PageHomeData'] = $PageHomeData;
+            $default_images = SettingManagement::select('default_course_image','default_blog_image')->first();
+            $default_course_image = $default_images->default_course_image;
+            $default_blog_image = $default_images->default_blog_image;
+
+            $data['pageContent'] = $pageContent;
+            $data['popularTag'] = PopularTag::orderBy('id','desc')->get();
             $data['sectionKeyFeature'] = SectionKeyFeature::first();
             $data['sectionJobAssistanceProgram'] = SectionJobAssistanceProgram::first();
             $data['sectionJobProgramSupport'] = SectionJobProgramSupport::first();
             $data['reviews'] = WebsiteReview::select('id','review','created_at','updated_at')->get();
 
-            // $data['trendingCourseList'] = Course::select(
-            //                                         'id',
-            //                                         'course_name',
-            //                                         'duration_value',
-            //                                         'duration_unit',
-            //                                         'image',
-            //                                         'short_content',
-            //                                         'slug',
-            //                                         'mete_title',
-            //                                         'mete_tag',
-            //                                         'meta_description',
-            //                                         'meta_keyword',
-            //                                         'search_tag',
-            //                                         'seo1',
-            //                                         'seo2',
-            //                                         'seo3',
-            //                                         'created_at',
-            //                                         'updated_at'
-            //                                     )
-            //                                     ->where('is_trending', 1)
-            //                                     ->orderBy('id','desc')
-            //                                     ->get();
+            $data['trendingCourseList'] = Course::select(
+                                                'id',
+                                                'category_id',
+                                                'course_name',
+                                                'duration_value',
+                                                'duration_unit',
+                                                'demo_video_url',
+                                                'course_desc',
+                                                'course_overview',
+                                                // 'course_content',
+                                                DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                                'rating',
+                                                'total_students_contacted',
+                                                'slug',
+                                                'mete_title',
+                                                'meta_description',
+                                                'search_tag',
+                                                'meta_keyword',
+                                                'seo1',
+                                                'seo2',
+                                                'seo3',
+                                                'feature_field1',
+                                                'feature_field2',
+                                                'feature_field3',
+                                                'created_at',
+                                                'updated_at',
+                                                )
+                                            ->where('status',1)
+                                            ->where('is_trending',1)
+                                            ->orderBy('id','desc')
+                                            ->get();
+
+            $data['popularCourseList'] = Course::select(
+                                                'id',
+                                                'category_id',
+                                                'course_name',
+                                                'duration_value',
+                                                'duration_unit',
+                                                'demo_video_url',
+                                                'course_desc',
+                                                'course_overview',
+                                                // 'course_content',
+                                                DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                                'rating',
+                                                'total_students_contacted',
+                                                'slug',
+                                                'mete_title',
+                                                'meta_description',
+                                                'search_tag',
+                                                'meta_keyword',
+                                                'seo1',
+                                                'seo2',
+                                                'seo3',
+                                                'feature_field1',
+                                                'feature_field2',
+                                                'feature_field3',
+                                                'created_at',
+                                                'updated_at',
+                                                )
+                                            ->where('status',1)
+                                            ->where('is_popular',1)
+                                            ->orderBy('id','desc')
+                                            ->get();
+
+            $data['freeCourseList'] = Course::select(
+                                                'id',
+                                                'category_id',
+                                                'course_name',
+                                                'duration_value',
+                                                'duration_unit',
+                                                'demo_video_url',
+                                                'course_desc',
+                                                'course_overview',
+                                                // 'course_content',
+                                                DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                                'rating',
+                                                'total_students_contacted',
+                                                'slug',
+                                                'mete_title',
+                                                'meta_description',
+                                                'search_tag',
+                                                'meta_keyword',
+                                                'seo1',
+                                                'seo2',
+                                                'seo3',
+                                                'feature_field1',
+                                                'feature_field2',
+                                                'feature_field3',
+                                                'created_at',
+                                                'updated_at',
+                                                )
+                                            ->where('status',1)
+                                            ->where('is_free',1)
+                                            ->orderBy('id','desc')
+                                            ->get();
 
             $data['blogList'] = $blogs = Blog::select(
                                             'id',
-                                            // 'category_id',
+                                            'category_id',
                                             'title',
-                                            'image',
+                                            DB::raw("COALESCE(blogs.image, '$default_blog_image') as image"),
                                             'short_content',
                                             // 'full_content',
                                             'slug',

@@ -129,21 +129,24 @@ class PageHomeController extends Controller
 
             //store reviews
             $reviews = json_decode($request->reviews);
+
             //delete all previous reviews
             WebsiteReview::truncate();
 
             //store review
-            $now = \Carbon\Carbon::now();
-            $reviews = array_map(function ($text) use ($now){
-                return [
-                    'review' => $text,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
+            if($reviews){
+                $now = \Carbon\Carbon::now();
+                $reviews = array_map(function ($text) use ($now){
+                    return [
+                        'review' => $text,
+                        'created_at' => $now,
+                        'updated_at' => $now,
+                    ];
 
-            }, $reviews);
+                }, $reviews);
 
-            WebsiteReview::insert($reviews);
+                WebsiteReview::insert($reviews);
+            }
 
             return sendSuccessResponse('Home page details updated successfully.', '');
         } catch (\Throwable $th) {
