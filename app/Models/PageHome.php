@@ -9,5 +9,5 @@ class PageHome extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title1','desc1','img1','title2','desc2','start_building_your_carrer_title','start_building_your_carrer_img','blog_list_title'];
+    protected $fillable = ['title1','desc1','img1','title2','desc2','start_building_your_carrer_title','start_building_your_carrer_img','blog_list_title','review_heading'];
 }

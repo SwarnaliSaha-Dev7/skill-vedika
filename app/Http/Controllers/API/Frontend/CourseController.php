@@ -98,8 +98,16 @@ class CourseController extends Controller
 
             $courses = $courses->paginate(15);
 
-
-            $categoryList = $courses->pluck('categoryDtls')->unique()->values();
+            // $categoryList = $courses->pluck('categoryDtls')->unique()->values();
+            // $categoryList = $courses->pluck('categoryDtls')->groupBy('id');
+            $categoryList = $courses->pluck('categoryDtls');
+            $categoryList = $categoryList->groupBy('id')->map(function ($items, $key) {
+                return [
+                    'id' => $key,
+                    'name' => $items->first()->name,
+                    'count' => $items->count()
+                ];
+            })->values();
 
             $data = [
                         'courses' => $courses,

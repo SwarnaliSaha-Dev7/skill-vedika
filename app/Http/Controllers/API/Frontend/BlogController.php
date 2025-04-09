@@ -21,6 +21,8 @@ class BlogController extends Controller
     {
         try {
 
+            $category = $request->input('category');  //Filter
+
             $default_blog_image = SettingManagement::value('default_blog_image');
 
             $blogs = Blog::with(['categoryDtls:id,name'])
@@ -44,13 +46,31 @@ class BlogController extends Controller
                                     'created_at',
                                     'updated_at'
                                 )
-                                ->orderBy('id','desc')
-                                ->paginate(15);
+                                ->orderBy('id','desc');
+                                // ->paginate(15);
+
+            if (!is_null($category)) {
+
+                $category = json_decode($category, true);
+                if(count($category)){
+                    $blogs->whereIn('category_id', $category);
+                }
+            }
+
+            $blogs = $blogs->paginate(15);
 
             // $categoryList = $blogs->pluck('categoryDtls')->unique()->values();
+            $categoryList = $blogs->pluck('categoryDtls');
+            $categoryList = $categoryList->groupBy('id')->map(function($items, $key){
+                return [
+                    'id'=> $key,
+                    'name'=> $items->first()->name,
+                    'count'=> $items->count(),
+                ];
+            })->values();
 
             $data['blogs'] = $blogs;
-            // $data['categoryList'] = $categoryList;
+            $data['categoryList'] = $categoryList;
             $data['pageContent'] = PageBlogListing::first();
             $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
 

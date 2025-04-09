@@ -66,7 +66,7 @@ class CourseController extends Controller
                 $request->all(),
                 [
                     'category_id' => 'required|integer',
-                    'skill' => 'required',
+                    'skills' => 'required',
                     'course_name' => 'required',
                     // 'duration_value' => 'required',
                     // 'duration_unit' => 'required',
@@ -137,8 +137,8 @@ class CourseController extends Controller
             $course_id = $storeInfo->id;
 
             //store skills
-            if ($request->skill && count(json_decode($request->skill)) > 0) {
-                $skillArr = json_decode($request->skill);
+            if ($request->skills && count(json_decode($request->skills)) > 0) {
+                $skillArr = json_decode($request->skills);
 
                 $insertedData = [];
                 foreach ($skillArr as $x) {

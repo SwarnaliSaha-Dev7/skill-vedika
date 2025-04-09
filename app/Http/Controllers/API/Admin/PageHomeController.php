@@ -123,6 +123,7 @@ class PageHomeController extends Controller
                 'start_building_your_carrer_title' => $request->start_building_your_carrer_title,
                 'start_building_your_carrer_img' => $start_building_your_carrer_img_path,
                 'blog_list_title' => $request->blog_list_title,
+                'review_heading' => $request->review_heading,
             ];
 
             $checkData->update($updatedData);
