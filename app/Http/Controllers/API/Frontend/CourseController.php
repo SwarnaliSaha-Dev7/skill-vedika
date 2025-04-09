@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\API\Frontend;
 
+use Validator;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use App\Models\CourseContact;
 use App\Models\SettingManagement;
+use App\Models\PageCourseSearchResult;
+use App\Models\popularTag;
+use App\Models\SectionLiveFreeDemo;
+use App\Models\SectionForCorporate;
+use App\Models\SectionJobAssistanceProgram;
+use App\Models\SectionJobProgramSupport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\Exception;
-use Validator;
 
 class CourseController extends Controller
 {
@@ -97,7 +103,10 @@ class CourseController extends Controller
 
             $data = [
                         'courses' => $courses,
-                        'categoryList' => $categoryList
+                        'categoryList' => $categoryList,
+                        'pageContent' =>  PageCourseSearchResult::first(),
+                        'popularTag' => PopularTag::orderBy('id','desc')->get(),
+                        'SectionLiveFreeDemo' => SectionLiveFreeDemo::first(),
                     ];
 
             return sendSuccessResponse('All courses fetched successfully.', $data);
@@ -162,9 +171,15 @@ class CourseController extends Controller
                 'courseFaqs' => $data->courseFaqs,
             ];
 
+            $data = null;
+            $data['courseData'] = $courseData;
+            $data['sectionForCorporate'] = SectionForCorporate::first();
+            $data['sectionJobAssistanceProgram'] = SectionJobAssistanceProgram::first();
+            $data['sectionJobProgramSupport'] = SectionJobProgramSupport::first();
+
 
             // return sendSuccessResponse('Course details fetched successfully.', $data);
-            return sendSuccessResponse('Course details fetched successfully.', $courseData);
+            return sendSuccessResponse('Course details fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }

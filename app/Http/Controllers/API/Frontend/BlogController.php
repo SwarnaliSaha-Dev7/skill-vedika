@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API\Frontend;
 use Validator;
 use App\Models\Blog;
 use App\Models\BlogContact;
-use Illuminate\Http\Request;
+use App\Models\PageBlogDetail;
 use App\Models\SettingManagement;
+use App\Models\SectionLiveFreeDemo;
+use App\Models\PageBlogListing;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -46,12 +49,12 @@ class BlogController extends Controller
 
             // $categoryList = $blogs->pluck('categoryDtls')->unique()->values();
 
-            // $data = [
-            //     'blogs' => $blogs,
-            //     'categoryList' => $categoryList
-            // ];
+            $data['blogs'] = $blogs;
+            // $data['categoryList'] = $categoryList;
+            $data['pageContent'] = PageBlogListing::first();
+            $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
 
-            return sendSuccessResponse('All blogs fetched successfully.', $blogs);
+            return sendSuccessResponse('All blogs fetched successfully.', $data);
 
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
@@ -64,7 +67,7 @@ class BlogController extends Controller
 
             $default_blog_image = SettingManagement::value('default_blog_image');
 
-            $data = Blog::with(['categoryDtls:id,name'])
+            $blogDetails = Blog::with(['categoryDtls:id,name'])
                                 ->select(
                                     'id',
                                     'category_id',
@@ -88,9 +91,13 @@ class BlogController extends Controller
                                 ->where('slug', $slug)
                                 ->first();
 
-            if (!$data) {
+            if (!$blogDetails) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
+
+            $data['blogDetails'] = $blogDetails;
+            $data['pageContent'] = PageBlogDetail::first();
+            $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
 
             return sendSuccessResponse('Blog details fetched successfully.', $data);
         } catch (\Throwable $th) {
