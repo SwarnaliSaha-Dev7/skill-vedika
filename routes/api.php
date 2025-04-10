@@ -110,7 +110,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/course/faq/listing', [CourseFaqController::class, 'listing']);
         Route::get('/course/faq/update/{id}', [CourseFaqController::class, 'updatedDataFetch']);
         Route::post('/course/faq/update/{id}', [CourseFaqController::class, 'update']);
-        Route::delete('/course/faq/delete/{id}', [CourseFaqController::class, 'destroy']);
+        Route::delete('/course/faq/delete/{course_id}', [CourseFaqController::class, 'destroy']);
 
 
         //=================== Blog =========================

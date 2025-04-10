@@ -123,19 +123,19 @@ class CourseFaqController extends Controller
         }
     }
 
-    public function destroy(Request $request, $id): JsonResponse
+    public function destroy(Request $request, $course_id): JsonResponse
     {
         try {
 
-            $checkData = CourseFaq::find($id);
+            $checkData = CourseFaq::where('course_id', $course_id)->get();
 
-            if (!$checkData) {
+            if (!count($checkData)) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
 
-            $checkData->delete();
+            CourseFaq::where('course_id', $course_id)->delete();
 
-            return sendSuccessResponse('FAQ deleted successfully.', '');
+            return sendSuccessResponse('FAQs deleted successfully.', '');
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
