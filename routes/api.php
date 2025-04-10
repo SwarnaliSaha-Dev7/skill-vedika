@@ -101,9 +101,9 @@ Route::prefix('admin')->group(function () {
         //=================== Course Reviews =========================
         Route::post('/course/review/add', [CourseReviewController::class, 'store']);
         Route::get('/course/review/listing', [CourseReviewController::class, 'listing']);
-        Route::get('/course/review/update/{id}', [CourseReviewController::class, 'updatedDataFetch']);
-        Route::post('/course/review/update/{id}', [CourseReviewController::class, 'update']);
-        Route::delete('/course/review/delete/{id}', [CourseReviewController::class, 'destroy']);
+        Route::get('/course/review/update/{course_id}', [CourseReviewController::class, 'updatedDataFetch']);
+        Route::post('/course/review/update/{course_id}', [CourseReviewController::class, 'update']);
+        Route::delete('/course/review/delete/{course_id}', [CourseReviewController::class, 'destroy']);
 
         //=================== Course FAQ =========================
         Route::post('/course/faq/add', [CourseFaqController::class, 'store']);

@@ -39,10 +39,12 @@ class PageHomeController extends Controller
             $reviews = WebsiteReview::select('id','review','created_at','updated_at')
                                     ->get();
 
-            $data['homePageData'] = $PageHomeData;
-            $data['reviews'] = $reviews;
+            $PageHomeData->reviews = $reviews;
 
-            return sendSuccessResponse('Home page details fetched successfully.', $data);
+            // $data['homePageData'] = $PageHomeData;
+            // $data['reviews'] = $reviews;
+
+            return sendSuccessResponse('Home page details fetched successfully.', $PageHomeData);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
