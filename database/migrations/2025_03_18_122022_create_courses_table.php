@@ -27,7 +27,7 @@ return new class extends Migration
             $table->longText('course_overview')->nullable();
             $table->longText('course_content')->nullable();
             $table->longText('course_logo')->nullable();
-            $table->tinyInteger('status')->nullable()->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->tinyInteger('top_tranding_course')->nullable()->default(0);
             $table->tinyInteger('is_popular')->nullable()->default(0);
             $table->tinyInteger('is_free')->nullable()->default(0);

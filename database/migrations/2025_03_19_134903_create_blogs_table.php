@@ -19,7 +19,7 @@ return new class extends Migration
             $table->longText('image')->nullable();
             $table->longText('short_content')->nullable();
             $table->longText('full_content')->nullable();
-            $table->tinyInteger('status')->nullable();
+            $table->tinyInteger('status')->nullable()->default(1);;
             $table->string('slug')->nullable();
             $table->string('mete_title')->nullable();
             $table->string('mete_tag')->nullable();

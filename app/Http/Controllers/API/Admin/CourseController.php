@@ -182,7 +182,8 @@ class CourseController extends Controller
             $course_curriculum_data = [];
             foreach($course_curriculum as $key=>$record){
                 $curriculum_data['course_id'] = $course_id;
-                $curriculum_data['curriculum'] = $record->curriculum;
+                // $curriculum_data['curriculum'] = $record->curriculum;
+                $curriculum_data['curriculum'] = $record;
                 $curriculum_data['created_at'] = \Carbon\Carbon::now();
                 $curriculum_data['updated_at'] = \Carbon\Carbon::now();
 
@@ -244,10 +245,11 @@ class CourseController extends Controller
                                 ->paginate(15);
                                 // ->paginate($perPage, ['*'], 'page', $pageNumber);
 
-            // return $data;
+            // return sendSuccessResponse('All courses fetched successfully.', $courses);
 
             // $courses = $data->data->map(function ($course) {
             // $courses = $courses->getCollection()->map(function ($course) {
+
             $courses->getCollection()->transform(function ($course) {
                 return [
                     'id' => $course->id,

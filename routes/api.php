@@ -108,8 +108,8 @@ Route::prefix('admin')->group(function () {
         //=================== Course FAQ =========================
         Route::post('/course/faq/add', [CourseFaqController::class, 'store']);
         Route::get('/course/faq/listing', [CourseFaqController::class, 'listing']);
-        Route::get('/course/faq/update/{id}', [CourseFaqController::class, 'updatedDataFetch']);
-        Route::post('/course/faq/update/{id}', [CourseFaqController::class, 'update']);
+        Route::get('/course/faq/update/{course_id}', [CourseFaqController::class, 'updatedDataFetch']);
+        Route::post('/course/faq/update/{course_id}', [CourseFaqController::class, 'update']);
         Route::delete('/course/faq/delete/{course_id}', [CourseFaqController::class, 'destroy']);
 
 

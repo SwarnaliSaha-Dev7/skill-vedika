@@ -76,48 +76,75 @@ class CourseFaqController extends Controller
         }
     }
 
-    public function updatedDataFetch(Request $request, $id): JsonResponse
+    public function updatedDataFetch(Request $request, $course_id): JsonResponse
     {
         try {
 
-            $data = CourseFaq::select('id','course_id','question','answer','created_at','updated_at')
-                                ->find($id);
+            $faqs = CourseFaq::with('course:id,course_name')
+                                ->where('course_id', $course_id)
+                                ->get();
+            // select('id','course_id','question','answer','created_at','updated_at')
+                                // ->find($id);
 
-            if (!$data) {
+            if (!count($faqs)) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
+
+            $data['course_id'] = $faqs->first()->course_id;
+            $data['course_name'] = $faqs->first()->course->course_name;
+            $data['faqs'] = $faqs->select('question','answer');
+
             return sendSuccessResponse('FAQ data fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
     }
 
-    public function update(Request $request, $id): JsonResponse
+    public function update(Request $request, $course_id): JsonResponse
     {
         try {
 
             $validator = Validator::make($request->all(), [
-                'question' => 'required',
-                'answer' => 'required',
+                'faqs' => 'required'
             ]);
 
             if ($validator->fails()) {
                 return sendErrorResponse('Validation Error.', $validator->errors(), 400);
             }
 
-            $checkData = CourseFaq::find($id);
+            $checkData = CourseFaq::where('course_id', $course_id)
+                                    ->get();
 
-            if (!$checkData) {
+            if (!count($checkData)) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
 
-            $storeInfo = CourseFaq::where('id', $id)
-                                        ->update([
-                                            'question' => $request->question,
-                                            'answer' => $request->answer,
-                                        ]);
+            //delete prev faqs
+            CourseFaq::where('course_id', $course_id)->delete();
 
-            return sendSuccessResponse('FAQ updated successfully.', '');
+            // $storeInfo = CourseFaq::where('id', $id)
+            //                             ->update([
+            //                                 'question' => $request->question,
+            //                                 'answer' => $request->answer,
+            //                             ]);
+
+            //store reviews
+            $faqs = json_decode($request->faqs);
+            $now = \Carbon\Carbon::now();
+            $faqs = array_map(function ($faq) use ($now, $course_id){
+                return [
+                    'course_id' => $course_id,
+                    'question' => $faq->question,
+                    'answer' => $faq->answer,
+                    'created_at' => $now,
+                    'updated_at' => $now,
+                ];
+
+            }, $faqs);
+
+            CourseFaq::insert($faqs);
+
+            return sendSuccessResponse('FAQs updated successfully.', '');
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
