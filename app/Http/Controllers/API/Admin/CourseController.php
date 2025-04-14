@@ -355,7 +355,7 @@ class CourseController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'category_id' => 'required|integer',
-                'skill' => 'required',
+                'skills' => 'required',
                 'course_name' => 'required',
             ]);
 
@@ -403,7 +403,7 @@ class CourseController extends Controller
 
             $updatedData = [
                 'category_id' => $request->category_id,
-                // 'skill_id' => $request->skill,
+                // 'skill_id' => $request->skills,
                 'course_name' => $request->course_name,
                 'duration_value' => $request->duration_value,
                 'duration_unit' => $request->duration_unit,
@@ -431,9 +431,9 @@ class CourseController extends Controller
 
             $storeInfo = Course::where('id', $id)->update($updatedData);
 
-            if ($request->skill && count(json_decode($request->skill)) > 0) {
+            if ($request->skills && count(json_decode($request->skills)) > 0) {
                 CoursesSkill::where('course_id', $id)->delete();
-                $skillArr = json_decode($request->skill);
+                $skillArr = json_decode($request->skills);
 
                 $insertedData = [];
                 foreach ($skillArr as $x) {
@@ -456,7 +456,8 @@ class CourseController extends Controller
                 foreach($course_curriculum as $key=>$record){
 
                     $curriculum_data['course_id'] = $id;
-                    $curriculum_data['curriculum'] = $record->curriculum;
+                    // $curriculum_data['curriculum'] = $record->curriculum;
+                    $curriculum_data['curriculum'] = $record;
                     $curriculum_data['created_at'] = \Carbon\Carbon::now();
                     $curriculum_data['updated_at'] = \Carbon\Carbon::now();
 

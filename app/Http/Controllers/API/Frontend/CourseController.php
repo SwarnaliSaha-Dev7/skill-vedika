@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\CourseContact;
 use App\Models\SettingManagement;
 use App\Models\PageCourseSearchResult;
-use App\Models\popularTag;
+use App\Models\PopularTag;
 use App\Models\SectionLiveFreeDemo;
 use App\Models\SectionForCorporate;
 use App\Models\SectionJobAssistanceProgram;
