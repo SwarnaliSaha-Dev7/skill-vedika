@@ -4,19 +4,20 @@ namespace App\Http\Controllers\API\Frontend;
 
 use Validator;
 use App\Models\Course;
+use App\Models\Category;
+use App\Models\PopularTag;
 use Illuminate\Http\Request;
 use App\Models\CourseContact;
 use App\Models\SettingManagement;
-use App\Models\PageCourseSearchResult;
-use App\Models\PopularTag;
-use App\Models\SectionLiveFreeDemo;
-use App\Models\SectionForCorporate;
-use App\Models\SectionJobAssistanceProgram;
-use App\Models\SectionJobProgramSupport;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Models\SectionForCorporate;
+use App\Models\SectionLiveFreeDemo;
 use App\Http\Controllers\Controller;
+use App\Models\PageCourseSearchResult;
 use App\Http\Controllers\API\Exception;
+use App\Models\SectionJobProgramSupport;
+use App\Models\SectionJobAssistanceProgram;
 
 class CourseController extends Controller
 {
@@ -98,16 +99,24 @@ class CourseController extends Controller
 
             $courses = $courses->paginate(15);
 
-            // $categoryList = $courses->pluck('categoryDtls')->unique()->values();
-            // $categoryList = $courses->pluck('categoryDtls')->groupBy('id');
-            $categoryList = $courses->pluck('categoryDtls');
-            $categoryList = $categoryList->groupBy('id')->map(function ($items, $key) {
-                return [
-                    'id' => $key,
-                    'name' => $items->first()->name,
-                    'count' => $items->count()
-                ];
-            })->values();
+            // // $categoryList = $courses->pluck('categoryDtls')->unique()->values();
+            // $categoryList = $courses->pluck('categoryDtls');
+            // $categoryList = $categoryList->groupBy('id')->map(function ($items, $key) {
+            //     return [
+            //         'id' => $key,
+            //         'name' => $items->first()->name,
+            //         'count' => $items->count()
+            //     ];
+            // })->values();
+
+            $categoryList = Category::select('id','name')
+            ->has('courses') // only categories that have courses
+            // ->with('courses')                  // eager load courses
+            ->withCount(['courses as count' => function ($query) {
+                $query->where('status', 1);
+            }])
+            ->get();
+
 
             $data = [
                         'courses' => $courses,

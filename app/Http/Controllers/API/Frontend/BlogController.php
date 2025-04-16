@@ -4,14 +4,15 @@ namespace App\Http\Controllers\API\Frontend;
 
 use Validator;
 use App\Models\Blog;
+use App\Models\Category;
 use App\Models\BlogContact;
-use App\Models\PageBlogDetail;
-use App\Models\SettingManagement;
-use App\Models\SectionLiveFreeDemo;
-use App\Models\PageBlogListing;
 use Illuminate\Http\Request;
+use App\Models\PageBlogDetail;
+use App\Models\PageBlogListing;
+use App\Models\SettingManagement;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Models\SectionLiveFreeDemo;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\Exception;
 
@@ -46,6 +47,7 @@ class BlogController extends Controller
                                     'created_at',
                                     'updated_at'
                                 )
+                                ->where('status',1)
                                 ->orderBy('id','desc');
                                 // ->paginate(15);
 
@@ -69,8 +71,17 @@ class BlogController extends Controller
                 ];
             })->values();
 
+            $categoryList1 = Category::select('id','name')
+            ->has('blogs') // only categories that have blogs
+            // ->with('blogs')                  // eager load courses
+            ->withCount(['blogs as count' => function ($query) {
+                $query->where('status', 1);
+            }])
+            ->get();
+
             $data['blogs'] = $blogs;
             $data['categoryList'] = $categoryList;
+            $data['categoryList1'] = $categoryList1;
             $data['pageContent'] = PageBlogListing::first();
             $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
 

@@ -78,6 +78,9 @@ class CourseController extends Controller
                 return sendErrorResponse('Validation Error.', $validator->errors(), 400);
             }
 
+            // return $request->all();
+            // return $request->curriculum_image;
+            // return 423423;
 
             // Save new file
             $path = public_path('uploads/course');
@@ -179,6 +182,10 @@ class CourseController extends Controller
 
             //store course curriculum
             $course_curriculum = json_decode($request->course_curriculum);
+            $request->curriculum_image = json_decode($request->curriculum_image, true);
+            // $carImg = json_decode($request->curriculum_image, true);
+            // return sendSuccessResponse('Course add successfully636.', $request->curriculum_image);
+
             $course_curriculum_data = [];
             foreach($course_curriculum as $key=>$record){
                 $curriculum_data['course_id'] = $course_id;
@@ -362,6 +369,8 @@ class CourseController extends Controller
             if ($validator->fails()) {
                 return sendErrorResponse('Validation Error.', $validator->errors(), 400);
             }
+
+            // return sendSuccessResponse('Course updated successfully636.', $request->all());
 
             $courseData = Course::find($id);
 

@@ -236,6 +236,7 @@ class CMSController extends Controller
                                             'created_at',
                                             'updated_at'
                                         )
+                                        ->where('status',1)
                                         ->orderBy('id','desc')
                                         // ->limit(3)
                                         ->get();

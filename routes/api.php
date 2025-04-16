@@ -30,6 +30,7 @@ use App\Http\Controllers\API\Admin\SectionJobAssistanceProgramController;
 use App\Http\Controllers\API\Frontend\CMSController;
 use App\Http\Controllers\API\Frontend\BlogController;
 use App\Http\Controllers\API\Frontend\CourseController;
+use App\Http\Controllers\API\Frontend\FrontendController;
 
 
 /*
@@ -65,6 +66,8 @@ Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditio
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
+// Fetch Skills
+Route::get('/skill/listing', [FrontendController::class, 'skillListing']);
 
 
 
