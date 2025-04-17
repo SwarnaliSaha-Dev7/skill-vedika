@@ -31,6 +31,7 @@ class Course extends Model
                             'rating',
                             'total_students_contacted',
                             'status',
+                            'is_trending',
                             'top_tranding_course',
                             'is_popular',
                             'is_free',

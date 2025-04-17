@@ -110,8 +110,9 @@ class CourseController extends Controller
             // })->values();
 
             $categoryList = Category::select('id','name')
-            ->has('courses') // only categories that have courses
-            // ->with('courses')                  // eager load courses
+            ->whereHas('courses', function ($query) {
+                $query->where('status', 1);
+            })
             ->withCount(['courses as count' => function ($query) {
                 $query->where('status', 1);
             }])

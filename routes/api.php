@@ -2,35 +2,37 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\API\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\API\Admin\UserController;
+use App\Http\Controllers\API\Admin\AdminController;
 use App\Http\Controllers\API\Admin\SkillController;
-use App\Http\Controllers\API\Admin\CourseController as AdminCourseController;
+use App\Http\Controllers\API\Frontend\CMSController;
+use App\Http\Controllers\API\Frontend\BlogController;
 use App\Http\Controllers\API\Admin\CategoryController;
 use App\Http\Controllers\API\Admin\PageHomeController;
 use App\Http\Controllers\API\Admin\CourseFaqController;
+use App\Http\Controllers\API\Frontend\CourseController;
 use App\Http\Controllers\API\Admin\PopularTagController;
 use App\Http\Controllers\API\Admin\WebsiteFaqController;
 use App\Http\Controllers\API\Admin\PageAboutUsController;
+use App\Http\Controllers\API\Frontend\FrontendController;
 use App\Http\Controllers\API\Admin\CourseReviewController;
 use App\Http\Controllers\API\Admin\PageContactUsController;
 use App\Http\Controllers\API\Admin\SeoManagementController;
+use App\Http\Controllers\API\Admin\AdminDashboardController;
 use App\Http\Controllers\API\Admin\PageBlogDetailController;
 use App\Http\Controllers\API\Admin\PageBlogListingController;
 use App\Http\Controllers\API\Admin\SectionKeyFeatureController;
 use App\Http\Controllers\API\Admin\SettingManagementController;
 use App\Http\Controllers\API\Admin\SectionForCorporateController;
 use App\Http\Controllers\API\Admin\SectionLiveFreeDemoController;
+
+
 use App\Http\Controllers\API\Admin\PageTermsAndConditionController;
 use App\Http\Controllers\API\Admin\PageCourseSearchResultController;
 use App\Http\Controllers\API\Admin\SectionJobProgramSupportController;
+use App\Http\Controllers\API\Admin\BlogController as AdminBlogController;
 use App\Http\Controllers\API\Admin\SectionJobAssistanceProgramController;
-
-
-use App\Http\Controllers\API\Frontend\CMSController;
-use App\Http\Controllers\API\Frontend\BlogController;
-use App\Http\Controllers\API\Frontend\CourseController;
-use App\Http\Controllers\API\Frontend\FrontendController;
+use App\Http\Controllers\API\Admin\CourseController as AdminCourseController;
 
 
 /*
@@ -99,7 +101,10 @@ Route::prefix('admin')->group(function () {
         Route::get('/course/update/{id}', [AdminCourseController::class, 'updatedDataFetch']);
         Route::post('/course/update/{id}', [AdminCourseController::class, 'update']);
         Route::delete('/course/delete/{id}', [AdminCourseController::class, 'destroy']);
+
         Route::get('/course/student-contact/listing', [AdminCourseController::class, 'studentContactList']);
+        Route::get('/course/student-contact/view/{id}', [AdminCourseController::class, 'studentContactView']);
+        Route::delete('/course/student-contact/delete/{id}', [AdminCourseController::class, 'studentContactDestroy']);
 
         //=================== Course Reviews =========================
         Route::post('/course/review/add', [CourseReviewController::class, 'store']);
@@ -137,6 +142,9 @@ Route::prefix('admin')->group(function () {
         Route::get('/popular_tag/update/{id}', [PopularTagController::class, 'updatedDataFetch']);
         Route::post('/popular_tag/update/{id}', [PopularTagController::class, 'update']);
         Route::delete('/popular_tag/delete/{id}', [PopularTagController::class, 'destroy']);
+
+        //=================== Admin Dashboard Page =========================
+        Route::get('/dashboard', [AdminDashboardController::class, 'adminDashboard']);
 
         //=================== About Us Page =========================
         Route::get('page/about-us/details', [PageAboutUsController::class, 'updatedDataFetch']);
@@ -195,8 +203,8 @@ Route::prefix('admin')->group(function () {
         Route::get('/seo/update/{type}', [SeoManagementController::class, 'updatedDataFetch']);
         Route::post('/seo/update/{type}', [SeoManagementController::class, 'update']);
 
-
-
+        //fetch course list(only id,name)
+        Route::get('/course-listing', [AdminController::class, 'courseListing']);
     });
 });
 

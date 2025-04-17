@@ -34,18 +34,31 @@ class CourseReviewController extends Controller
 
             //store reviews
             $reviews = json_decode($request->review);
+            $course_id_set = json_decode($request->course_id);
+            $reviewsData = [];
             $now = \Carbon\Carbon::now();
-            $reviews = array_map(function ($text) use ($now, $request){
-                return [
-                    'course_id' => $request->course_id,
-                    'review' => $text,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
+            // $reviews = array_map(function ($text) use ($now, $request){
+            //     return [
+            //         'course_id' => $request->course_id,
+            //         'review' => $text,
+            //         'created_at' => $now,
+            //         'updated_at' => $now,
+            //     ];
 
-            }, $reviews);
+            // }, $reviews);
 
-            CourseReview::insert($reviews);
+            foreach ($course_id_set as $key => $course_id) {
+                foreach ($reviews as $key => $review) {
+                    $reviewsData[] = [
+                                        'course_id' => $course_id,
+                                        'review' => $review,
+                                        'created_at' => $now,
+                                        'updated_at' => $now,
+                                    ];
+                }
+            }
+
+            CourseReview::insert($reviewsData);
 
             return sendSuccessResponse('Reviews inserted successfully.', '');
         } catch (\Throwable $th) {
@@ -62,7 +75,9 @@ class CourseReviewController extends Controller
                                 // ->select('id','course_id','review','created_at','updated_at')
                                 ->select(
                                     'course_id',
-                                    DB::raw('GROUP_CONCAT(review SEPARATOR " || ") as reviews'))
+                                    DB::raw('GROUP_CONCAT(review SEPARATOR " || ") as reviews'),
+                                    DB::raw('COUNT(*) as total_reviews')
+                                )
                                 // ->orderBy('id','desc')
                                 ->groupBy('course_id')
                                 ->paginate(15);

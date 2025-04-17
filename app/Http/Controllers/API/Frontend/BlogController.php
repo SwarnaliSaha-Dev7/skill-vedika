@@ -61,27 +61,28 @@ class BlogController extends Controller
 
             $blogs = $blogs->paginate(15);
 
-            // $categoryList = $blogs->pluck('categoryDtls')->unique()->values();
-            $categoryList = $blogs->pluck('categoryDtls');
-            $categoryList = $categoryList->groupBy('id')->map(function($items, $key){
-                return [
-                    'id'=> $key,
-                    'name'=> $items->first()->name,
-                    'count'=> $items->count(),
-                ];
-            })->values();
+            // // $categoryList = $blogs->pluck('categoryDtls')->unique()->values();
+            // $categoryList = $blogs->pluck('categoryDtls');
+            // $categoryList = $categoryList->groupBy('id')->map(function($items, $key){
+            //     return [
+            //         'id'=> $key,
+            //         'name'=> $items->first()->name,
+            //         'count'=> $items->count(),
+            //     ];
+            // })->values();
 
-            $categoryList1 = Category::select('id','name')
-            ->has('blogs') // only categories that have blogs
-            // ->with('blogs')                  // eager load courses
+            $categoryList = Category::select('id','name')
+            ->whereHas('blogs', function ($query) {
+                $query->where('status', 1);
+            })
             ->withCount(['blogs as count' => function ($query) {
                 $query->where('status', 1);
             }])
             ->get();
 
             $data['blogs'] = $blogs;
+            // $data['categoryList'] = $categoryList;
             $data['categoryList'] = $categoryList;
-            $data['categoryList1'] = $categoryList1;
             $data['pageContent'] = PageBlogListing::first();
             $data['SectionLiveFreeDemo'] = SectionLiveFreeDemo::first();
 

@@ -584,4 +584,43 @@ class CourseController extends Controller
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
     }
+
+    public function studentContactView(Request $request, $id): JsonResponse
+    {
+        try {
+
+            $data = CourseContact::with([
+                                        'courseDtls:id,course_name,category_id',
+                                        'courseDtls.categoryDtls:id,name',
+                                        'courseDtls.skills:name'
+                                    ])
+                                    ->find($id);
+
+            if (!$data) {
+                return sendErrorResponse('Data not found.', '', 404);
+            }
+
+            return sendSuccessResponse('Contact details fetched successfully.', $data);
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
+    public function studentContactDestroy(Request $request, $id): JsonResponse
+    {
+        try {
+
+            $checkData = CourseContact::find($id);
+
+            if (!$checkData) {
+                return sendErrorResponse('Data not found.', '', 404);
+            }
+
+            $checkData->delete();
+
+            return sendSuccessResponse('Contact details deleted successfully.', '');
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
 }

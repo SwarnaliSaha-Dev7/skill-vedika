@@ -36,19 +36,33 @@ class CourseFaqController extends Controller
 
             //store faqs
             $faqs = json_decode($request->faqs);
+            $course_id_set = json_decode($request->course_id);
+            $faqsData = [];
             $now = \Carbon\Carbon::now();
-            $faqs = array_map(function ($faq) use ($now, $request){
-                return [
-                    'course_id' => $request->course_id,
-                    'question' => $faq->question,
-                    'answer' => $faq->answer,
-                    'created_at' => $now,
-                    'updated_at' => $now,
-                ];
+            // $faqs = array_map(function ($faq) use ($now, $request){
+            //     return [
+            //         'course_id' => $request->course_id,
+            //         'question' => $faq->question,
+            //         'answer' => $faq->answer,
+            //         'created_at' => $now,
+            //         'updated_at' => $now,
+            //     ];
 
-            }, $faqs);
+            // }, $faqs);
 
-            CourseFaq::insert($faqs);
+            foreach ($course_id_set as $key => $course_id) {
+                foreach ($faqs as $key => $faq) {
+                    $faqsData[] = [
+                                        'course_id' => $course_id,
+                                        'question' => $faq->question,
+                                        'answer' => $faq->answer,
+                                        'created_at' => $now,
+                                        'updated_at' => $now,
+                                    ];
+                }
+            }
+
+            CourseFaq::insert($faqsData);
 
             return sendSuccessResponse('FAQs inserted successfully.', '');
         } catch (\Throwable $th) {
@@ -61,10 +75,10 @@ class CourseFaqController extends Controller
         try {
 
             $data = CourseFaq::with('course:id,course_name')
-                                // ->select('id','course_id','question','answer','created_at','updated_at')
                                 ->select(
                                     'course_id',
-                                    DB::raw('GROUP_CONCAT(CONCAT("Q:", question, ", A:", answer)  SEPARATOR " || ") as faqs')
+                                    DB::raw('GROUP_CONCAT(CONCAT("Q:", question, ", A:", answer)  SEPARATOR " || ") as faqs'),
+                                    DB::raw('COUNT(*) as total_faqs')
                                     )
                                 ->groupBy('course_id')
                                 // ->orderBy('id','desc')
