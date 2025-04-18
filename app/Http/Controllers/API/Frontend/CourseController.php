@@ -18,6 +18,7 @@ use App\Models\PageCourseSearchResult;
 use App\Http\Controllers\API\Exception;
 use App\Models\SectionJobProgramSupport;
 use App\Models\SectionJobAssistanceProgram;
+use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
 {
@@ -212,6 +213,7 @@ class CourseController extends Controller
                 'student_name' => 'required',
                 'student_email' => 'required',
                 'phone' => 'required',
+                'is_terms_and_condition_checked_by_student' => 'required',
             ]);
 
             if ($validator->fails()) {
@@ -225,7 +227,26 @@ class CourseController extends Controller
                             'calling_code' => $request->calling_code,
                             'phone' => $request->phone,
                             'message' => $request->message,
+                            'is_terms_and_condition_checked_by_student' => $request->is_terms_and_condition_checked_by_student,
                         ]);
+
+            // $courseDtls = Course::find($request->course_id);
+
+            $data = [
+                // "course_name" => $courseDtls->course_name,
+                'student_name' => $request->student_name,
+                'student_email' => $request->student_email,
+                'student_phone' => "+".$request->calling_code." ".$request->phone,
+                "date" => \Carbon\Carbon::now()->toDateString(),
+            ];
+
+            // Send email to Admin
+            $adminEmail = env('ADMIN_MAIL');
+            Mail::send('email.frontend.studentLeadGenerationNotification', $data, function ($message) use ($adminEmail) {
+                $message->to($adminEmail) // Use the recipient's email
+                    ->subject('Student Lead Generation Alert on Skill Vedika');
+                $message->from(env('MAIL_FROM_ADDRESS'), "Skill Vedika");
+            });
 
             return sendSuccessResponse('Message sent successfully!', '');
         } catch (\Throwable $th) {

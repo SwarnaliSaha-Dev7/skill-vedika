@@ -179,7 +179,7 @@ class SettingManagementController extends Controller
 
             $checkData->update($updatedData);
 
-            return sendSuccessResponse('Section for Corporate details updated successfully.', '');
+            return sendSuccessResponse('Settings updated successfully.', '');
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }

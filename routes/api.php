@@ -68,8 +68,14 @@ Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditio
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
+// Become an Instructor Contact
+Route::post('/become-an-instructor/contact', [FrontendController::class, 'becomeAnInstructorContact']);
+
 // Fetch Skills
 Route::get('/skill/listing', [FrontendController::class, 'skillListing']);
+
+// Fetch Course list(only id,name)
+Route::get('/course-listing', [FrontendController::class, 'courseListing']);
 
 
 
@@ -102,6 +108,7 @@ Route::prefix('admin')->group(function () {
         Route::post('/course/update/{id}', [AdminCourseController::class, 'update']);
         Route::delete('/course/delete/{id}', [AdminCourseController::class, 'destroy']);
 
+        //=================== Course Contact=========================
         Route::get('/course/student-contact/listing', [AdminCourseController::class, 'studentContactList']);
         Route::get('/course/student-contact/view/{id}', [AdminCourseController::class, 'studentContactView']);
         Route::delete('/course/student-contact/delete/{id}', [AdminCourseController::class, 'studentContactDestroy']);
