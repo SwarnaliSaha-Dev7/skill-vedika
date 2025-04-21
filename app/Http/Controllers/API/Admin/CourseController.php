@@ -187,18 +187,19 @@ class CourseController extends Controller
             // $request->curriculum_image = json_decode($request->curriculum_image, true);
             // $images = json_decode($request->curriculum_image, true);
             $course_curriculum = $request->course_curriculum;
-            $images = $request->curriculum_image;
-            foreach ($request->file('curriculum_image') as $index => $image) {
+            // $images = $request->curriculum_image;
+            // foreach ($request->file('curriculum_image') as $index => $image) {
 
-                $path = $image->store('public/curriculum_images');
-                // return sendSuccessResponse('Course added successfully332.', $path);
+            //     // $path = $image->store('public/curriculum_images');
+            //     $path = $image->store('curriculum_images');
+            //     // return sendSuccessResponse('Course added successfully332.', $path);
 
-                // // Optional: save path with the related curriculum title
-                // Curriculum::create([
-                //     'title' => $curriculums[$index] ?? 'Untitled',
-                //     'image_path' => $path,
-                // ]);
-            }
+            //     // // Optional: save path with the related curriculum title
+            //     // Curriculum::create([
+            //     //     'title' => $curriculums[$index] ?? 'Untitled',
+            //     //     'image_path' => $path,
+            //     // ]);
+            // }
             // $carImg = json_decode($request->curriculum_image, true);
             // return sendSuccessResponse('Course add successfully636.', $request->curriculum_image);
 
@@ -216,6 +217,7 @@ class CourseController extends Controller
                 if ($request->hasFile('curriculum_image.' . $key)) {
                     $file = $request->file('curriculum_image.' . $key);
                     $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
+                    // return sendSuccessResponse('Course add successfully636.', $fileName);
                     $file->move($path, $fileName);
                     $filePath = "uploads/course/" . $fileName;
                 }

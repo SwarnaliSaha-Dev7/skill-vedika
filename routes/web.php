@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    // return view('welcome');
-    return "Hello from SkillVedika";
+    return view('welcome');
+    // return "Hello from SkillVedika";
 });
 
 Route::get('login', function () {

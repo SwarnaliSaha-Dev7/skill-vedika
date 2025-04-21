@@ -51,6 +51,9 @@ use App\Http\Controllers\API\Admin\CourseController as AdminCourseController;
 //     return $request->user();
 // });
 
+Route::get('/', function () {
+    return "APIS caught from SkillVedika";
+});
 
 //=================== Course =========================
 Route::get('/course/listing', [CourseController::class, 'listing']);
