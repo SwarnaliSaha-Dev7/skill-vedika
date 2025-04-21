@@ -24,9 +24,10 @@ use App\Http\Controllers\API\Admin\PageBlogListingController;
 use App\Http\Controllers\API\Admin\SectionKeyFeatureController;
 use App\Http\Controllers\API\Admin\SettingManagementController;
 use App\Http\Controllers\API\Admin\SectionForCorporateController;
+
+
 use App\Http\Controllers\API\Admin\SectionLiveFreeDemoController;
-
-
+use App\Http\Controllers\API\Admin\PageBecomeInstructorsController;
 use App\Http\Controllers\API\Admin\PageTermsAndConditionController;
 use App\Http\Controllers\API\Admin\PageCourseSearchResultController;
 use App\Http\Controllers\API\Admin\SectionJobProgramSupportController;
@@ -66,6 +67,7 @@ Route::get('/page/home-page', [CMSController::class, 'homePage']);
 Route::get('/page/about-us', [CMSController::class, 'aboutUsPage']);
 Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditionPage']);
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);
+Route::get('/page/become-instructor', [CMSController::class, 'becomeInstructorPage']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
 // Become an Instructor Contact
@@ -83,8 +85,8 @@ Route::prefix('admin')->group(function () {
     Route::post('/login', [UserController::class, 'login']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
-        // Route::get('/f1', [UserController::class, 'f1']);
         Route::post('/logout', [UserController::class, 'logout']);
+        Route::post('change-profile', [UserController::class, 'changeAdminProfileData']);
 
         //==== Category ====
         Route::post('/category/add', [CategoryController::class, 'store']);
@@ -180,6 +182,10 @@ Route::prefix('admin')->group(function () {
         //=================== Blog Detail Page =========================
         Route::get('page/blog-detail/details', [PageBlogDetailController::class, 'updatedDataFetch']);
         Route::post('page/blog-detail/details/update', [PageBlogDetailController::class, 'update']);
+
+        //=================== Blog Detail Page =========================
+        Route::get('page/become-instructor/details', [PageBecomeInstructorsController::class, 'updatedDataFetch']);
+        Route::post('page/become-instructor/details/update', [PageBecomeInstructorsController::class, 'update']);
 
         //=================== Section For Corporates =========================
         Route::get('section/for-corporates/details', [SectionForCorporateController::class, 'updatedDataFetch']);

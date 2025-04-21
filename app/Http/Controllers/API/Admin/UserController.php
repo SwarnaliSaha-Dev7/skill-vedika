@@ -71,12 +71,53 @@ class UserController extends Controller
         }
     }
 
-    // public function f1(Request $request): JsonResponse
-    // {
-    //     try {
-    //         return sendSuccessResponse('Hello.', 1);
-    //     } catch (\Throwable $th) {
-    //         return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
-    //     }
-    // }
+    public function changeAdminProfileData(Request $request): JsonResponse
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required',
+                'name' => 'required',
+                'email' => 'required|email'
+            ]);
+
+            if ($validator->fails()) {
+                return sendErrorResponse('Validation Error.', $validator->errors(), 403);
+            }
+
+            $user = User::find($request->user_id);
+
+            if (!$user) {
+                return sendErrorResponse('User not found.', '', 404);
+            }
+
+            // //check if email exists
+            // $user = DB::table('users')
+            //         ->where('email', $request->email)
+            //         ->where('id', "!=", $request->user_id)
+            //         ->first();
+
+            // if ($user) {
+            //     return sendErrorResponse('The email has already been taken.', '', 404);
+            // }
+
+
+            // $user->password = bcrypt($request->new_password);
+            // $user->save();
+            $updateData = [
+                'name' => $request->name,
+                'email' => $request->email,
+            ];
+
+            if($request->new_password){
+                $updateData['password'] = bcrypt($request->new_password);
+            }
+
+            User::where('id', $request->user_id)->update($updateData);
+
+            return sendSuccessResponse('Profile updated successfully.', '');
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
 }

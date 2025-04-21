@@ -78,6 +78,8 @@ class CourseController extends Controller
                 return sendErrorResponse('Validation Error.', $validator->errors(), 400);
             }
 
+            // return sendSuccessResponse('Course added successfully.', $request->all());
+
             // return $request->all();
             // return $request->curriculum_image;
             // return 423423;
@@ -181,8 +183,22 @@ class CourseController extends Controller
 
 
             //store course curriculum
-            $course_curriculum = json_decode($request->course_curriculum);
-            $request->curriculum_image = json_decode($request->curriculum_image, true);
+            // $course_curriculum = json_decode($request->course_curriculum);
+            // $request->curriculum_image = json_decode($request->curriculum_image, true);
+            // $images = json_decode($request->curriculum_image, true);
+            $course_curriculum = $request->course_curriculum;
+            $images = $request->curriculum_image;
+            foreach ($request->file('curriculum_image') as $index => $image) {
+
+                $path = $image->store('public/curriculum_images');
+                // return sendSuccessResponse('Course added successfully332.', $path);
+
+                // // Optional: save path with the related curriculum title
+                // Curriculum::create([
+                //     'title' => $curriculums[$index] ?? 'Untitled',
+                //     'image_path' => $path,
+                // ]);
+            }
             // $carImg = json_decode($request->curriculum_image, true);
             // return sendSuccessResponse('Course add successfully636.', $request->curriculum_image);
 

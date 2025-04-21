@@ -27,12 +27,26 @@ class AdminDashboardController extends Controller
             $data['totalCourseContacts'] = CourseContact::get()->count();
             $data['totalCategory'] = Category::get()->count();
 
-            $data['monthlyLeads'] = CourseContact::
-            selectRaw("DATE_FORMAT(created_at, '%Y-%M') as month, COUNT(*) as total_count")
-            ->whereYear('created_at', Carbon::now()->year)
-            ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%M')"))
-            // ->orderBy(DB::raw("DATE_FORMAT(created_at, '%Y-%M')"))
-            ->get();
+            // $data['monthlyLeads'] = CourseContact::
+            // selectRaw("DATE_FORMAT(created_at, '%Y-%M') as month, COUNT(*) as total_count")
+            // ->whereYear('created_at', Carbon::now()->year)
+            // ->groupBy(DB::raw("DATE_FORMAT(created_at, '%Y-%M')"))
+            // // ->orderBy(DB::raw("DATE_FORMAT(created_at, '%Y-%M')"))
+            // ->get();
+
+            $monthlyLeads = CourseContact::
+                            selectRaw("MONTH(created_at) as month, COUNT(*) as total_count")
+                            ->whereYear('created_at', Carbon::now()->year)
+                            ->groupBy('month')
+                            ->orderBy('month')
+                            ->get();
+
+            $monthlyLeadArray = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+            foreach ($monthlyLeads as $key => $value) {
+                $monthlyLeadArray[$value['month'] - 1] = $value['total_count'];
+            }
+
+            $data['monthlyLeads'] = $monthlyLeadArray;
 
             $data['latestCourseContacts'] = CourseContact::with([
                                                 'courseDtls:id,course_name,category_id',

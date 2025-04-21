@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->longText('title1')->nullable();
             $table->longText('small_desc')->nullable();
-            $table->longText('image')->nullable();
-            $table->longText('title2')->nullable();
+            $table->longText('iamge')->nullable();
+            $table->longText('form_title')->nullable();
             $table->timestamps();
         });
     }

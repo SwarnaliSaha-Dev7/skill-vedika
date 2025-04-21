@@ -6,6 +6,7 @@ use Validator;
 use App\Models\Blog;
 use App\Models\Course;
 use App\Models\PageHome;
+use App\Models\PopularTag;
 use App\Models\WebsiteFaq;
 use App\Models\PageAboutUs;
 use Illuminate\Http\Request;
@@ -13,11 +14,11 @@ use App\Models\PageContactUs;
 use App\Models\WebsiteReview;
 use App\Models\SectionKeyFeature;
 use App\Models\SettingManagement;
-use App\Models\PopularTag;
-use App\Models\SectionLiveFreeDemo;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Models\SectionLiveFreeDemo;
 use App\Http\Controllers\Controller;
+use App\Models\PageBecomeInstructors;
 use App\Models\PageTermsAndCondition;
 use App\Http\Controllers\API\Exception;
 use App\Models\SectionJobProgramSupport;
@@ -243,6 +244,24 @@ class CMSController extends Controller
 
 
             return sendSuccessResponse('Home page details fetched successfully.', $data);
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
+    public function becomeInstructorPage(Request $request): JsonResponse
+    {
+        try {
+
+            $pageContent = PageBecomeInstructors::first();
+
+            if (!$pageContent) {
+                return sendErrorResponse('Data not found.', '', 404);
+            }
+
+            $data['pageContent'] = $pageContent;
+
+            return sendSuccessResponse('Become Instructors page details fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
