@@ -183,10 +183,17 @@ class CourseController extends Controller
 
 
             //store course curriculum
-            // $course_curriculum = json_decode($request->course_curriculum);
-            // $request->curriculum_image = json_decode($request->curriculum_image, true);
+            $course_curriculum = json_decode($request->course_curriculum);
+            $request->curriculum_image = json_decode($request->curriculum_image);
+
+            // $course_curriculum = $request->course_curriculum;
+            // $request->curriculum_image = json_encode($request->curriculum_image);
+            // $request->curriculum_image = json_decode($request->curriculum_image);
+            // return sendSuccessResponse('Course added successfully new12.', $request->curriculum_image);
+
+
             // $images = json_decode($request->curriculum_image, true);
-            $course_curriculum = $request->course_curriculum;
+            // $course_curriculum = $request->course_curriculum;
             // $images = $request->curriculum_image;
             // foreach ($request->file('curriculum_image') as $index => $image) {
 
@@ -221,6 +228,9 @@ class CourseController extends Controller
                     $file->move($path, $fileName);
                     $filePath = "uploads/course/" . $fileName;
                 }
+                // else{
+                //     $filePath = "doc_not_found";
+                // }
                 $curriculum_data['image'] = $filePath;
 
 
@@ -475,9 +485,18 @@ class CourseController extends Controller
             }
 
 
+            $prevCurriculumImgList = CourseCurriculum::where('course_id', $id)
+                                                        ->where('image', '!=', null)
+                                                        ->get()
+                                                        ->pluck('image')
+                                                        ->toArray();
+
             if ($request->course_curriculum && count(json_decode($request->course_curriculum)) > 0) {
+            // if ($request->course_curriculum && count($request->course_curriculum) > 0) {
                 CourseCurriculum::where('course_id', $id)->delete();
                 $course_curriculum = json_decode($request->course_curriculum);
+                // $course_curriculum = $request->course_curriculum;
+                $request->curriculum_image = json_decode($request->curriculum_image);
                 $course_curriculum_data = [];
 
                 foreach($course_curriculum as $key=>$record){
@@ -512,6 +531,26 @@ class CourseController extends Controller
 
                 CourseCurriculum::insert($course_curriculum_data);
             }
+
+            $currentCurriculumImgList = CourseCurriculum::where('course_id', $id)
+                                                        ->where('image', '!=', null)
+                                                        ->get()
+                                                        ->pluck('image')
+                                                        ->toArray();
+
+            // $deleteImg = [];
+            foreach ($prevCurriculumImgList as $img) {
+                if(!in_array($img, $currentCurriculumImgList)){
+                    // $deleteImg[] = $img;
+                    $this->delete_file($img);
+                }
+            }
+
+            // $data['prevCurriculumImgList'] = $prevCurriculumImgList;
+            // $data['currentCurriculumImgList'] = $currentCurriculumImgList;
+            // $data['deleteImg'] = $deleteImg;
+            // return sendSuccessResponse('Course updated successfully.', $data);
+
 
             if ($request->course_topics && count(json_decode($request->course_topics)) > 0) {
                 CourseTopic::where('course_id', $id)->delete();
