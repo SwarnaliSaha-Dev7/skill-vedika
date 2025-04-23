@@ -52,6 +52,14 @@ class SectionLiveFreeDemoController extends Controller
                 return sendErrorResponse('Validation Error.', $validator->errors(), 400);
             }
 
+            // Log::info($request->file('image')->getMimeType());
+            // Log::info($request->file('image')->getSize());
+            // return sendSuccessResponse('Section Live 123.', $request->file('image')->getMimeType()); //The \"\" file does not exist or is not readable.
+            // return sendSuccessResponse('Section Live 123.', $request->file('image')->getSize()); //false
+
+
+
+
             $checkData = SectionLiveFreeDemo::first();
 
             if (!$checkData) {

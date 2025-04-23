@@ -157,6 +157,7 @@ class CourseController extends Controller
 
             $courseData = [
                 'id' => $data->id,
+                'course_name' => $data->course_name,
                 'category_id' => $data->category_id,
                 'category_name' => $data->categoryDtls->name,
                 'skills' => $data->skills->pluck('id')->toArray(),
@@ -164,6 +165,7 @@ class CourseController extends Controller
                 'duration_unit' => $data->duration_unit,
                 'demo_video_url' => $data->demo_video_url,
                 'course_desc' => $data->course_desc,
+                'course_overview' => $data->course_overview,
                 // 'overview_img' => $data->overview_img,
                 'course_content' => $data->course_content,
                 'course_logo' => $data->course_logo ? $data->course_logo : $default_course_image,
