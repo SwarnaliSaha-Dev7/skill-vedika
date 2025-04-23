@@ -151,6 +151,9 @@ class CourseController extends Controller
                     ->where('slug', $slug)
                     ->first();
 
+            // return sendSuccessResponse('Course details fetched successfully.', $data);
+
+
             if (!$data) {
                 return sendErrorResponse('Data not found.', '', 404);
             }
@@ -160,7 +163,8 @@ class CourseController extends Controller
                 'course_name' => $data->course_name,
                 'category_id' => $data->category_id,
                 'category_name' => $data->categoryDtls->name,
-                'skills' => $data->skills->pluck('id')->toArray(),
+                // 'skills' => $data->skills->pluck('id')->toArray(),
+                'skills' => $data->skills->pluck('name')->toArray(),
                 'duration_value' => $data->duration_value,
                 'duration_unit' => $data->duration_unit,
                 'demo_video_url' => $data->demo_video_url,
