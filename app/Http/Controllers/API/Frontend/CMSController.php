@@ -266,4 +266,48 @@ class CMSController extends Controller
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
     }
+
+    public function settingsData(Request $request): JsonResponse
+    {
+        try {
+
+            $settingsData = SettingManagement::select(
+                                                    'site_url',
+                                                    'title',
+                                                    // 'default_course_image',
+                                                    // 'default_blog_image',
+                                                    // 'default_demo_video_url',
+                                                    'phone_no',
+                                                    'email',
+                                                    'location_1_address',
+                                                    'location_2_address',
+                                                    'facebook_url',
+                                                    'instagram_url',
+                                                    'linkedIn_url',
+                                                    'youtube_url',
+                                                    'twitter_url',
+                                                    'header_logo',
+                                                    'footer_logo',
+                                                    'footer_short_description',
+                                                    'footer_copy_right',
+                                                    'footer_quick_links',
+                                                    'footer_support',
+                                                    'footer_disclaimer',
+                                                    'footer_category',
+                                                    'google_analytics',
+                                                    'default_color_theme',
+                                                    'current_color_theme'
+                                                )
+                                                ->first();
+
+            if (!$settingsData) {
+                return sendErrorResponse('Data not found.', '', 404);
+            }
+
+            $data['settingsData'] = $settingsData;
+            return sendSuccessResponse('Settings data fetched successfully.', $data);
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
 }

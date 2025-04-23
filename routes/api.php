@@ -71,6 +71,7 @@ Route::get('/page/about-us', [CMSController::class, 'aboutUsPage']);
 Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditionPage']);
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);
 Route::get('/page/become-instructor', [CMSController::class, 'becomeInstructorPage']);
+Route::get('/page/settings-data', [CMSController::class, 'settingsData']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
 // Become an Instructor Contact

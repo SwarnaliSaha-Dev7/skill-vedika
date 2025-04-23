@@ -218,13 +218,17 @@ class CourseController extends Controller
                 $curriculum_data['created_at'] = \Carbon\Carbon::now();
                 $curriculum_data['updated_at'] = \Carbon\Carbon::now();
 
+                // $file = $request->file('curriculum_image.' . 0);
+                // $dtls["mimeType"] = $file->getMimeType();
+                // $dtls["size"] = $file->getSize();
+                // return sendSuccessResponse('Course add successfully636.', $dtls);
+
                 //upload image
                 $fileName = null;
                 $filePath = null;
                 if ($request->hasFile('curriculum_image.' . $key)) {
                     $file = $request->file('curriculum_image.' . $key);
                     $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
-                    // return sendSuccessResponse('Course add successfully636.', $fileName);
                     $file->move($path, $fileName);
                     $filePath = "uploads/course/" . $fileName;
                 }
