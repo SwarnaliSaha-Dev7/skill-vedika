@@ -11,6 +11,7 @@ use App\Models\WebsiteFaq;
 use App\Models\PageAboutUs;
 use Illuminate\Http\Request;
 use App\Models\PageContactUs;
+use App\Models\SeoManagement;
 use App\Models\WebsiteReview;
 use App\Models\SectionKeyFeature;
 use App\Models\SettingManagement;
@@ -306,6 +307,23 @@ class CMSController extends Controller
 
             $data['settingsData'] = $settingsData;
             return sendSuccessResponse('Settings data fetched successfully.', $data);
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
+    public function seoDataOfPage(Request $request, $type): JsonResponse
+    {
+        try {
+
+            $data = SeoManagement::
+                            where('page_type', $type)
+                            ->first();
+
+            if (!$data) {
+                return sendErrorResponse('Data not found.', '', 404);
+            }
+            return sendSuccessResponse('SEO data fetched successfully.', $data);
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }

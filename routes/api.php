@@ -74,6 +74,9 @@ Route::get('/page/become-instructor', [CMSController::class, 'becomeInstructorPa
 Route::get('/page/settings-data', [CMSController::class, 'settingsData']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
+//=================== SEO Data of Page =========================
+Route::get('/seo-data-of-page/{type}', [CMSController::class, 'seoDataOfPage']);
+
 // Become an Instructor Contact
 Route::post('/become-an-instructor/contact', [FrontendController::class, 'becomeAnInstructorContact']);
 
