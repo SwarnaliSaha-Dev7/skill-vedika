@@ -138,6 +138,14 @@ class CourseController extends Controller
                 'slug' => $slug,
             ];
 
+            //assign empty string if demo_video_url is null
+            if($request->demo_video_url == null){
+                $insertedData['demo_video_url'] = "";
+            }
+            else{
+                $insertedData['demo_video_url'] = $request->demo_video_url;
+            }
+
             $storeInfo = Course::create($insertedData);
             $course_id = $storeInfo->id;
 
@@ -448,7 +456,7 @@ class CourseController extends Controller
                 'course_name' => $request->course_name,
                 'duration_value' => $request->duration_value,
                 'duration_unit' => $request->duration_unit,
-                'demo_video_url' => $request->demo_video_url,
+                // 'demo_video_url' => $request->demo_video_url,
                 'course_desc' => $request->course_desc,
                 'course_overview' => $request->course_overview,
                 // 'overview_img' => $courseOverviewImgFilePath,
@@ -469,6 +477,14 @@ class CourseController extends Controller
                 'seo3' => $request->seo3,
                 'slug' => $slug,
             ];
+
+            //assign empty string if demo_video_url is null
+            if($request->demo_video_url == null){
+                $updatedData['demo_video_url'] = "";
+            }
+            else{
+                $updatedData['demo_video_url'] = $request->demo_video_url;
+            }
 
             $storeInfo = Course::where('id', $id)->update($updatedData);
 

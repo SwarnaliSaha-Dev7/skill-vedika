@@ -26,6 +26,15 @@ class CourseController extends Controller
     {
         try {
 
+            $data = Course::
+            where('demo_video_url', null)
+            ->get();
+
+            $storeInfo = Course::whereNull('demo_video_url')->update(['demo_video_url' => ""]);
+
+            return sendSuccessResponse('All courses fetched successfully.', $data);
+            //test
+
             $category = $request->input('category');  //Filter
             $skill = $request->input('skill');  //search
             $courseName = $request->input('courseName');  //search
