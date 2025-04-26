@@ -64,6 +64,7 @@ class SeoManagementController extends Controller
 
             $updatedData = [
                 'page' => $request->page,
+                'site_url' => $request->site_url,
                 'mete_title' => $request->mete_title,
                 'meta_description' => $request->meta_description,
                 'meta_keyword' => $request->meta_keyword,
