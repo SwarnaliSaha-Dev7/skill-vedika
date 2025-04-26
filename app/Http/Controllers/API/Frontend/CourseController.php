@@ -39,7 +39,11 @@ class CourseController extends Controller
             $skill = $request->input('skill');  //search
             $courseName = $request->input('courseName');  //search
 
-            $default_course_image = SettingManagement::value('default_course_image');
+            // $default_course_image = SettingManagement::value('default_course_image');
+            $SettingsData = SettingManagement::first();
+            $default_course_image = $SettingsData->default_course_image;
+            $default_course_small_icon = $SettingsData->default_course_small_icon;
+            // return sendSuccessResponse('All courses fetched successfully.', $default_course_small_icon);
 
             $courses = Course::with([
                                 'skills:id,name',
@@ -64,6 +68,7 @@ class CourseController extends Controller
                                     'course_content',
                                     // 'course_logo',
                                     DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                    DB::raw("COALESCE(courses.course_small_icon, '$default_course_small_icon') as course_small_icon"),
                                     'rating',
                                     'total_students_contacted',
                                     'status',

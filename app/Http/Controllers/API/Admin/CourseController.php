@@ -98,6 +98,14 @@ class CourseController extends Controller
                 $courseLogoFilePath = "uploads/course/" . $fileName;
             }
 
+            $fileName = null;
+            $courseSmallIconFilePath = null;
+            if ($request->hasFile('course_small_icon')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('course_small_icon')->getClientOriginalName();
+                $request->course_small_icon->move($path, $fileName);
+                $courseSmallIconFilePath = "uploads/course/" . $fileName;
+            }
+
             // //save overview_img
             // $fileName = null;
             // $courseOverviewImgFilePath = null;
@@ -122,6 +130,7 @@ class CourseController extends Controller
                 // 'overview_img' => $courseOverviewImgFilePath,
                 'course_content' => $request->course_content,
                 'course_logo' => $courseLogoFilePath,
+                'course_small_icon' => $courseSmallIconFilePath,
                 'rating' => $request->rating,
                 'total_students_contacted' => $request->total_students_contacted,
                 'status' => $request->status,
@@ -310,6 +319,7 @@ class CourseController extends Controller
                     // 'overview_img' => $course->overview_img,
                     'course_content' => $course->course_content,
                     'course_logo' => $course->course_logo,
+                    'course_small_icon' => $course->course_small_icon,
                     'rating' => $course->rating,
                     'total_students_contacted' => $course->total_students_contacted,
                     'status' => $course->status,
@@ -365,6 +375,7 @@ class CourseController extends Controller
                 // 'overview_img' => $data->overview_img,
                 'course_content' => $data->course_content,
                 'course_logo' => $data->course_logo,
+                'course_small_icon' => $data->course_small_icon,
                 'rating' => $data->rating,
                 'total_students_contacted' => $data->total_students_contacted,
                 'status' => $data->status,
@@ -450,6 +461,25 @@ class CourseController extends Controller
                 // }
             }
 
+            $fileName = null;
+            $courseSmallIconFilePath = null;
+            if ($request->hasFile('course_small_icon')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('course_small_icon')->getClientOriginalName();
+                $request->course_small_icon->move($path, $fileName);
+                $courseSmallIconFilePath = "uploads/course/" . $fileName;
+
+                if ($courseData->course_small_icon) {
+                    $this->delete_file($courseData->course_small_icon);
+                }
+            } else {
+                if($request->course_small_icon){
+                    $courseSmallIconFilePath = $courseData->course_small_icon;
+                }
+                // else{
+                //     $courseSmallIconFilePath = null;
+                // }
+            }
+
             $updatedData = [
                 'category_id' => $request->category_id,
                 // 'skill_id' => $request->skills,
@@ -462,6 +492,7 @@ class CourseController extends Controller
                 // 'overview_img' => $courseOverviewImgFilePath,
                 'course_content' => $request->course_content,
                 'course_logo' => $courseLogoFilePath,
+                'course_small_icon' => $courseSmallIconFilePath,
                 'rating' =>  $request->rating,
                 'total_students_contacted' =>  $request->total_students_contacted,
                 'status' => $request->status,
@@ -609,6 +640,10 @@ class CourseController extends Controller
 
             if ($checkData->course_logo) {
                 $this->delete_file($checkData->course_logo);
+            }
+
+            if ($checkData->course_small_icon) {
+                $this->delete_file($checkData->course_small_icon);
             }
 
             //delete skills

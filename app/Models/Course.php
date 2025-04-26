@@ -28,6 +28,7 @@ class Course extends Model
                             'overview_img',
                             'course_content',
                             'course_logo',
+                            'course_small_icon',
                             'rating',
                             'total_students_contacted',
                             'status',
