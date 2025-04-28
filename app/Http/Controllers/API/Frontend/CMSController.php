@@ -112,9 +112,10 @@ class CMSController extends Controller
                 return sendErrorResponse('Data not found.', '', 404);
             }
 
-            $default_images = SettingManagement::select('default_course_image','default_blog_image')->first();
+            $default_images = SettingManagement::select('default_course_image','default_blog_image','default_course_small_icon')->first();
             $default_course_image = $default_images->default_course_image;
             $default_blog_image = $default_images->default_blog_image;
+            $default_course_small_icon = $default_images->default_course_small_icon;
 
             $data['pageContent'] = $pageContent;
             $data['popularTag'] = PopularTag::orderBy('id','desc')->get();
@@ -134,6 +135,7 @@ class CMSController extends Controller
                                                 'course_overview',
                                                 // 'course_content',
                                                 DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                                DB::raw("COALESCE(courses.course_small_icon, '$default_course_small_icon') as course_small_icon"),
                                                 'rating',
                                                 'total_students_contacted',
                                                 'slug',
@@ -166,6 +168,7 @@ class CMSController extends Controller
                                                 'course_overview',
                                                 // 'course_content',
                                                 DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                                DB::raw("COALESCE(courses.course_small_icon, '$default_course_small_icon') as course_small_icon"),
                                                 'rating',
                                                 'total_students_contacted',
                                                 'slug',
@@ -198,6 +201,7 @@ class CMSController extends Controller
                                                 'course_overview',
                                                 // 'course_content',
                                                 DB::raw("COALESCE(courses.course_logo, '$default_course_image') as course_logo"),
+                                                DB::raw("COALESCE(courses.course_small_icon, '$default_course_small_icon') as course_small_icon"),
                                                 'rating',
                                                 'total_students_contacted',
                                                 'slug',

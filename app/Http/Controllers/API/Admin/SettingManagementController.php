@@ -85,6 +85,28 @@ class SettingManagementController extends Controller
             }
 
 
+            //default_course_small_icon upload
+            $fileName = null;
+            $default_course_small_icon_path = null;
+            if ($request->hasFile('default_course_small_icon')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('default_course_small_icon')->getClientOriginalName();
+                $request->default_course_small_icon->move($path, $fileName);
+                $default_course_small_icon_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->default_course_small_icon) {
+                    $this->delete_file($checkData->default_course_small_icon);
+                }
+            } else {
+                if($request->default_course_small_icon){
+                    $default_course_small_icon_path = $request->default_course_small_icon;
+                    // $default_course_small_icon_path = $checkData->default_course_small_icon;
+                }
+                // else{
+                //     $default_course_small_icon_path = null;
+                // }
+            }
+
+
             //default_blog_image upload
             $fileName = null;
             $default_blog_image_path = null;
@@ -153,6 +175,7 @@ class SettingManagementController extends Controller
                 'site_url' => $request->site_url,
                 'title' => $request->title,
                 'default_course_image' => $default_course_image_path,
+                'default_course_small_icon' => $default_course_small_icon_path,
                 'default_blog_image' => $default_blog_image_path,
                 'default_demo_video_url' => $request->default_demo_video_url,
                 'phone_no' => $request->phone_no,

@@ -153,7 +153,11 @@ class CourseController extends Controller
     {
         try {
 
-            $default_course_image = SettingManagement::value('default_course_image');
+            $SettingsData = SettingManagement::first();
+            $default_course_image = $SettingsData->default_course_image;
+            $default_course_small_icon = $SettingsData->default_course_small_icon;
+
+            // $default_course_image = SettingManagement::value('default_course_image');
 
             $data = Course::with([
                     'skills',
@@ -187,6 +191,7 @@ class CourseController extends Controller
                 // 'overview_img' => $data->overview_img,
                 'course_content' => $data->course_content,
                 'course_logo' => $data->course_logo ? $data->course_logo : $default_course_image,
+                'course_small_icon' => $data->course_small_icon ? $data->course_small_icon : $default_course_small_icon,
                 'rating' => $data->rating,
                 'total_students_contacted' => $data->total_students_contacted,
                 'status' => $data->status,
