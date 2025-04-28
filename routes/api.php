@@ -236,7 +236,3 @@ Route::fallback(function () {
         'message' => 'Endpoint not found. Please check the URL or HTTP method.'
     ], 404);
 });
-
-
-// test
-
