@@ -156,6 +156,7 @@ class CourseController extends Controller
             $SettingsData = SettingManagement::first();
             $default_course_image = $SettingsData->default_course_image;
             $default_course_small_icon = $SettingsData->default_course_small_icon;
+            $default_demo_video_url = $SettingsData->default_demo_video_url;
 
             // $default_course_image = SettingManagement::value('default_course_image');
 
@@ -185,7 +186,7 @@ class CourseController extends Controller
                 'skills' => $data->skills->pluck('name')->toArray(),
                 'duration_value' => $data->duration_value,
                 'duration_unit' => $data->duration_unit,
-                'demo_video_url' => $data->demo_video_url,
+                'demo_video_url' => $data->demo_video_url ? $data->demo_video_url : $default_demo_video_url,
                 'course_desc' => $data->course_desc,
                 'course_overview' => $data->course_overview,
                 // 'overview_img' => $data->overview_img,
