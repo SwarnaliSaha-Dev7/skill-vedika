@@ -589,6 +589,7 @@ class CourseController extends Controller
                                                         ->pluck('image')
                                                         ->toArray();
 
+            //delete prev Curriculum Img that is not in use
             // $deleteImg = [];
             foreach ($prevCurriculumImgList as $img) {
                 if(!in_array($img, $currentCurriculumImgList)){
