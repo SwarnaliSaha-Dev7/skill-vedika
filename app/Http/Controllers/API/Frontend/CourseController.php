@@ -112,8 +112,10 @@ class CourseController extends Controller
                 $courses->where('course_name', 'LIKE', "%$courseName%");
             }
 
-            $courses = $courses->paginate(15);
-            // $courses = $courses->get();
+            // $courses = $courses->paginate(15);
+            $allCourses = $courses->get();
+            $courses = null;
+            $courses['data'] = $allCourses;
 
             // // $categoryList = $courses->pluck('categoryDtls')->unique()->values();
             // $categoryList = $courses->pluck('categoryDtls');
