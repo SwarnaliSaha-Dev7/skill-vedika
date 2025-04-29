@@ -113,7 +113,7 @@ class CourseController extends Controller
             }
 
             // $courses = $courses->paginate(15);
-            $courses = $courses->paginate(2);
+            $courses = $courses->get();
 
             // // $categoryList = $courses->pluck('categoryDtls')->unique()->values();
             // $categoryList = $courses->pluck('categoryDtls');
