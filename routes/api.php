@@ -28,6 +28,7 @@ use App\Http\Controllers\API\Admin\SectionForCorporateController;
 
 use App\Http\Controllers\API\Admin\SectionLiveFreeDemoController;
 use App\Http\Controllers\API\Admin\PageBecomeInstructorsController;
+use App\Http\Controllers\API\Admin\PageCorporateTrainingController;
 use App\Http\Controllers\API\Admin\PageTermsAndConditionController;
 use App\Http\Controllers\API\Admin\PageCourseSearchResultController;
 use App\Http\Controllers\API\Admin\SectionJobProgramSupportController;
@@ -71,6 +72,7 @@ Route::get('/page/about-us', [CMSController::class, 'aboutUsPage']);
 Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditionPage']);
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);
 Route::get('/page/become-instructor', [CMSController::class, 'becomeInstructorPage']);
+Route::get('/page/corporate-training', [CMSController::class, 'corporateTrainingPage']);
 Route::get('/page/settings-data', [CMSController::class, 'settingsData']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
@@ -173,6 +175,10 @@ Route::prefix('admin')->group(function () {
         //=================== Contact Us Page =========================
         Route::get('page/contact-us/details', [PageContactUsController::class, 'updatedDataFetch']);
         Route::post('page/contact-us/details/update', [PageContactUsController::class, 'update']);
+
+        //=================== Corporate Training Page =========================
+        Route::get('page/corporate-training/details', [PageCorporateTrainingController::class, 'updatedDataFetch']);
+        Route::post('page/corporate-training/details/update', [PageCorporateTrainingController::class, 'update']);
 
         //=================== Course Listing Page =========================
         Route::get('page/course-listing/details', [PageCourseSearchResultController::class, 'updatedDataFetch']);
