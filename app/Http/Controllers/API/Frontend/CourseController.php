@@ -253,7 +253,7 @@ class CourseController extends Controller
                             'course_id' => $request->course_id,
                             'student_name' => $request->student_name,
                             'student_email' => $request->student_email,
-                            'calling_code' => $request->calling_code,
+                            'calling_code' => "+".$request->calling_code,
                             'phone' => $request->phone,
                             'message' => $request->message,
                             'is_terms_and_condition_checked_by_student' => $request->is_terms_and_condition_checked_by_student,
