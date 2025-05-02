@@ -6,6 +6,7 @@ use Validator;
 use App\Models\Skill;
 use App\Models\Course;
 use Illuminate\Http\Request;
+use App\Models\SettingManagement;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Mail;
@@ -69,12 +70,16 @@ class FrontendController extends Controller
             ];
 
             // Send email to Admin
-            $adminEmail = env('ADMIN_MAIL');
-            Mail::send('email.frontend.becomeAnInstructorContactNotification', $data, function ($message) use ($adminEmail) {
-                $message->to($adminEmail) // Use the recipient's email
-                    ->subject('New Instructor Application Submition Alert on Skill Vedika');
-                $message->from(env('MAIL_FROM_ADDRESS'), "Skill Vedika");
-            });
+            // $adminEmail = env('ADMIN_MAIL');
+            $adminEmail = SettingManagement::first()->email;
+
+            if($adminEmail){
+                Mail::send('email.frontend.becomeAnInstructorContactNotification', $data, function ($message) use ($adminEmail) {
+                    $message->to($adminEmail) // Use the recipient's email
+                        ->subject('New Instructor Application Submition Alert on Skill Vedika');
+                    $message->from(env('MAIL_FROM_ADDRESS'), "Skill Vedika");
+                });
+            }
 
             return sendSuccessResponse('Message sent successfully!', '');
         } catch (\Throwable $th) {

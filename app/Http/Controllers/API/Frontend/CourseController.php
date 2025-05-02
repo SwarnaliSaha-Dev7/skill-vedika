@@ -270,12 +270,16 @@ class CourseController extends Controller
             ];
 
             // Send email to Admin
-            $adminEmail = env('ADMIN_MAIL');
-            Mail::send('email.frontend.studentLeadGenerationNotification', $data, function ($message) use ($adminEmail) {
-                $message->to($adminEmail) // Use the recipient's email
-                    ->subject('Student Lead Generation Alert on Skill Vedika');
-                $message->from(env('MAIL_FROM_ADDRESS'), "Skill Vedika");
-            });
+            // $adminEmail = env('ADMIN_MAIL');
+            $adminEmail = SettingManagement::first()->email;
+
+            if($adminEmail){
+                Mail::send('email.frontend.studentLeadGenerationNotification', $data, function ($message) use ($adminEmail) {
+                    $message->to($adminEmail) // Use the recipient's email
+                        ->subject('Student Lead Generation Alert on Skill Vedika');
+                    $message->from(env('MAIL_FROM_ADDRESS'), "Skill Vedika");
+                });
+            }
 
             return sendSuccessResponse('Message sent successfully!', '');
         } catch (\Throwable $th) {
