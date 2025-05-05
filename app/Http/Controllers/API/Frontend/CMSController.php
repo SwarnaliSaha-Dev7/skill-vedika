@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\PageContactUs;
 use App\Models\SeoManagement;
 use App\Models\WebsiteReview;
+use App\Models\PageOnJobSupport;
 use App\Models\HrProfessionalFaq;
 use App\Models\SectionKeyFeature;
 use App\Models\SettingManagement;
@@ -347,6 +348,25 @@ class CMSController extends Controller
 
             $data['page_content'] = $pageContent;
             $data['hr_professional_faqs'] = HrProfessionalFaq::get();
+            $data['section_live_free_demo'] = SectionLiveFreeDemo::first();
+
+            return sendSuccessResponse('Corporate Training page details fetched successfully.', $data);
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
+    public function onJobSupportPage(Request $request): JsonResponse
+    {
+        try {
+
+            $pageContent = PageOnJobSupport::first();
+
+            if (!$pageContent) {
+                return sendErrorResponse('Data not found.', '', 404);
+            }
+
+            $data['page_content'] = $pageContent;
             $data['section_live_free_demo'] = SectionLiveFreeDemo::first();
 
             return sendSuccessResponse('Corporate Training page details fetched successfully.', $data);

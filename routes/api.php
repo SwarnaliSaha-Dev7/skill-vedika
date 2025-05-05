@@ -74,6 +74,7 @@ Route::get('/page/terms-and-condition', [CMSController::class, 'termsAndConditio
 Route::get('/page/contact-us', [CMSController::class, 'contactUsPage']);
 Route::get('/page/become-instructor', [CMSController::class, 'becomeInstructorPage']);
 Route::get('/page/corporate-training', [CMSController::class, 'corporateTrainingPage']);
+Route::get('/page/on-job-support', [CMSController::class, 'onJobSupportPage']);
 Route::get('/page/settings-data', [CMSController::class, 'settingsData']);
 Route::get('/faqs', [CMSController::class, 'websiteFaq']);
 
@@ -183,7 +184,7 @@ Route::prefix('admin')->group(function () {
 
         //=================== On Job Support Page =========================
         Route::get('page/on-job-support/details', [PageOnJobSupportController::class, 'updatedDataFetch']);
-        // Route::post('page/corporate-training/details/update', [PageCorporateTrainingController::class, 'update']);
+        Route::post('page/on-job-support/details/update', [PageOnJobSupportController::class, 'update']);
 
         //=================== Course Listing Page =========================
         Route::get('page/course-listing/details', [PageCourseSearchResultController::class, 'updatedDataFetch']);

@@ -8,6 +8,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
 use App\Models\PageOnJobSupport;
 use App\Http\Controllers\API\Exception;
+use Validator;
 
 class PageOnJobSupportController extends Controller
 {
@@ -105,26 +106,152 @@ class PageOnJobSupportController extends Controller
                 // }
             }
 
-            // //sec_portfolio_option1_img upload
-            // $fileName = null;
-            // $sec_portfolio_option1_img_path = null;
-            // if ($request->hasFile('sec_portfolio_option1_img')) {
-            //     $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec_portfolio_option1_img')->getClientOriginalName();
-            //     $request->sec_portfolio_option1_img->move($path, $fileName);
-            //     $sec_portfolio_option1_img_path = "uploads/CMS/" . $fileName;
+            //sec3_img upload
+            $fileName = null;
+            $sec3_img_path = null;
+            if ($request->hasFile('sec3_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec3_img')->getClientOriginalName();
+                $request->sec3_img->move($path, $fileName);
+                $sec3_img_path = "uploads/CMS/" . $fileName;
 
-            //     if ($checkData->sec_portfolio_option1_img) {
-            //         $this->delete_file($checkData->sec_portfolio_option1_img);
-            //     }
-            // } else {
-            //     if($request->sec_portfolio_option1_img){
-            //         $sec_portfolio_option1_img_path = $request->sec_portfolio_option1_img;
-            //         // $sec_portfolio_option1_img_path = $checkData->sec_portfolio_option1_img;
-            //     }
-            //     // else{
-            //     //     $sec_portfolio_option1_img_path = null;
-            //     // }
-            // }
+                if ($checkData->sec3_img) {
+                    $this->delete_file($checkData->sec3_img);
+                }
+            } else {
+                if($request->sec3_img){
+                    $sec3_img_path = $request->sec3_img;
+                    // $sec3_img_path = $checkData->sec3_img;
+                }
+                // else{
+                //     $sec3_img_path = null;
+                // }
+            }
+
+            //sec4_point1_img upload
+            $fileName = null;
+            $sec4_point1_img_path = null;
+            if ($request->hasFile('sec4_point1_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec4_point1_img')->getClientOriginalName();
+                $request->sec4_point1_img->move($path, $fileName);
+                $sec4_point1_img_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->sec4_point1_img) {
+                    $this->delete_file($checkData->sec4_point1_img);
+                }
+            } else {
+                if($request->sec4_point1_img){
+                    $sec4_point1_img_path = $request->sec4_point1_img;
+                    // $sec4_point1_img_path = $checkData->sec4_point1_img;
+                }
+                // else{
+                //     $sec4_point1_img_path = null;
+                // }
+            }
+
+            //sec4_point2_img upload
+            $fileName = null;
+            $sec4_point2_img_path = null;
+            if ($request->hasFile('sec4_point2_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec4_point2_img')->getClientOriginalName();
+                $request->sec4_point2_img->move($path, $fileName);
+                $sec4_point2_img_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->sec4_point2_img) {
+                    $this->delete_file($checkData->sec4_point2_img);
+                }
+            } else {
+                if($request->sec4_point2_img){
+                    $sec4_point2_img_path = $request->sec4_point2_img;
+                    // $sec4_point2_img_path = $checkData->sec4_point2_img;
+                }
+                // else{
+                //     $sec4_point2_img_path = null;
+                // }
+            }
+
+            //sec4_point3_img upload
+            $fileName = null;
+            $sec4_point3_img_path = null;
+            if ($request->hasFile('sec4_point3_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec4_point3_img')->getClientOriginalName();
+                $request->sec4_point3_img->move($path, $fileName);
+                $sec4_point3_img_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->sec4_point3_img) {
+                    $this->delete_file($checkData->sec4_point3_img);
+                }
+            } else {
+                if($request->sec4_point3_img){
+                    $sec4_point3_img_path = $request->sec4_point3_img;
+                    // $sec4_point3_img_path = $checkData->sec4_point3_img;
+                }
+                // else{
+                //     $sec4_point3_img_path = null;
+                // }
+            }
+
+            //sec4_point4_img upload
+            $fileName = null;
+            $sec4_point4_img_path = null;
+            if ($request->hasFile('sec4_point4_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec4_point4_img')->getClientOriginalName();
+                $request->sec4_point4_img->move($path, $fileName);
+                $sec4_point4_img_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->sec4_point4_img) {
+                    $this->delete_file($checkData->sec4_point4_img);
+                }
+            } else {
+                if($request->sec4_point4_img){
+                    $sec4_point4_img_path = $request->sec4_point4_img;
+                    // $sec4_point4_img_path = $checkData->sec4_point4_img;
+                }
+                // else{
+                //     $sec4_point4_img_path = null;
+                // }
+            }
+
+            //sec4_point5_img upload
+            $fileName = null;
+            $sec4_point5_img_path = null;
+            if ($request->hasFile('sec4_point5_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec4_point5_img')->getClientOriginalName();
+                $request->sec4_point5_img->move($path, $fileName);
+                $sec4_point5_img_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->sec4_point5_img) {
+                    $this->delete_file($checkData->sec4_point5_img);
+                }
+            } else {
+                if($request->sec4_point5_img){
+                    $sec4_point5_img_path = $request->sec4_point5_img;
+                    // $sec4_point5_img_path = $checkData->sec4_point5_img;
+                }
+                // else{
+                //     $sec4_point5_img_path = null;
+                // }
+            }
+
+            //sec6_img upload
+            $fileName = null;
+            $sec6_img_path = null;
+            if ($request->hasFile('sec6_img')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('sec6_img')->getClientOriginalName();
+                $request->sec6_img->move($path, $fileName);
+                $sec6_img_path = "uploads/CMS/" . $fileName;
+
+                if ($checkData->sec6_img) {
+                    $this->delete_file($checkData->sec6_img);
+                }
+            } else {
+                if($request->sec6_img){
+                    $sec6_img_path = $request->sec6_img;
+                    // $sec6_img_path = $checkData->sec6_img;
+                }
+                // else{
+                //     $sec6_img_path = null;
+                // }
+            }
 
             //sec_ready_to_empower_workforce_img upload
             $fileName = null;
@@ -148,41 +275,20 @@ class PageOnJobSupportController extends Controller
             }
 
             $updatedData = $request->all();
-            // $updatedData['sec1_img'] = $sec1_img_path;
-            // $updatedData['sec2_img'] = $sec2_img_path;
-            // $updatedData['sec_portfolio_option1_img'] = $sec_portfolio_option1_img_path;
-            // $updatedData['sec_portfolio_option2_img'] = $sec_portfolio_option2_img_path;
-            // $updatedData['sec_portfolio_option3_img'] = $sec_portfolio_option3_img_path;
-            // $updatedData['sec_portfolio_option4_img'] = $sec_portfolio_option4_img_path;
-            // $updatedData['sec_portfolio_option5_img'] = $sec_portfolio_option5_img_path;
-            // $updatedData['sec_portfolio_option6_img'] = $sec_portfolio_option6_img_path;
-            // $updatedData['sec_corporate_training_sec1_img'] = $sec_corporate_training_sec1_img_path;
-            // $updatedData['sec_corporate_training_sec2_img'] = $sec_corporate_training_sec2_img_path;
-            // $updatedData['sec_ready_to_empower_workforce_img'] = $sec_ready_to_empower_workforce_img_path;
+            $updatedData['sec1_img'] = $sec1_img_path;
+            $updatedData['sec2_img'] = $sec2_img_path;
+            $updatedData['sec3_img'] = $sec3_img_path;
+            $updatedData['sec4_point1_img'] = $sec4_point1_img_path;
+            $updatedData['sec4_point2_img'] = $sec4_point2_img_path;
+            $updatedData['sec4_point3_img'] = $sec4_point3_img_path;
+            $updatedData['sec4_point4_img'] = $sec4_point4_img_path;
+            $updatedData['sec4_point5_img'] = $sec4_point5_img_path;
+            $updatedData['sec6_img'] = $sec6_img_path;
+            $updatedData['sec_ready_to_empower_workforce_img'] = $sec_ready_to_empower_workforce_img_path;
 
             $checkData->update($updatedData);
 
-            //store HR Faqs
-            $faqs = json_decode($request->faqs);
-            HrProfessionalFaq::truncate(); //delete all previous HR Professional faqs
-
-            //store review
-            if($faqs){
-                $now = \Carbon\Carbon::now();
-                $faqs = array_map(function ($faq) use ($now){
-                    return [
-                        'question' => $faq->question,
-                        'answer' => $faq->answer,
-                        'created_at' => $now,
-                        'updated_at' => $now,
-                    ];
-
-                }, $faqs);
-
-                HrProfessionalFaq::insert($faqs);
-            }
-
-            return sendSuccessResponse('Corporate Training page details updated successfully.', '');
+            return sendSuccessResponse('On Job Support page details updated successfully.', '');
         } catch (\Throwable $th) {
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
