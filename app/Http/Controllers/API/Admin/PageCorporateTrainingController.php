@@ -333,7 +333,7 @@ class PageCorporateTrainingController extends Controller
             $checkData->update($updatedData);
 
             //store HR Faqs
-            $faqs = json_decode($request->faqs);
+            $faqs = json_decode($request->hr_professional_faqs);
             HrProfessionalFaq::truncate(); //delete all previous HR Professional faqs
 
             //store review

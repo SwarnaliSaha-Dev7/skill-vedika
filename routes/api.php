@@ -21,11 +21,12 @@ use App\Http\Controllers\API\Admin\SeoManagementController;
 use App\Http\Controllers\API\Admin\AdminDashboardController;
 use App\Http\Controllers\API\Admin\PageBlogDetailController;
 use App\Http\Controllers\API\Admin\PageBlogListingController;
+use App\Http\Controllers\API\Admin\PageOnJobSupportController;
 use App\Http\Controllers\API\Admin\SectionKeyFeatureController;
 use App\Http\Controllers\API\Admin\SettingManagementController;
+
+
 use App\Http\Controllers\API\Admin\SectionForCorporateController;
-
-
 use App\Http\Controllers\API\Admin\SectionLiveFreeDemoController;
 use App\Http\Controllers\API\Admin\PageBecomeInstructorsController;
 use App\Http\Controllers\API\Admin\PageCorporateTrainingController;
@@ -179,6 +180,10 @@ Route::prefix('admin')->group(function () {
         //=================== Corporate Training Page =========================
         Route::get('page/corporate-training/details', [PageCorporateTrainingController::class, 'updatedDataFetch']);
         Route::post('page/corporate-training/details/update', [PageCorporateTrainingController::class, 'update']);
+
+        //=================== On Job Support Page =========================
+        Route::get('page/on-job-support/details', [PageOnJobSupportController::class, 'updatedDataFetch']);
+        // Route::post('page/corporate-training/details/update', [PageCorporateTrainingController::class, 'update']);
 
         //=================== Course Listing Page =========================
         Route::get('page/course-listing/details', [PageCourseSearchResultController::class, 'updatedDataFetch']);
