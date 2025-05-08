@@ -116,6 +116,7 @@ Route::prefix('admin')->group(function () {
 
         //=================== Course =========================
         Route::post('/course/add', [AdminCourseController::class, 'add']);
+        Route::post('/course/curriculum/image/upload', [AdminCourseController::class, 'uploadCourseCurriculumImage']);
         Route::get('/course/listing', [AdminCourseController::class, 'listing']);
         Route::get('/course/update/{id}', [AdminCourseController::class, 'updatedDataFetch']);
         Route::post('/course/update/{id}', [AdminCourseController::class, 'update']);

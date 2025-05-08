@@ -78,12 +78,6 @@ class CourseController extends Controller
                 return sendErrorResponse('Validation Error.', $validator->errors(), 400);
             }
 
-            // return sendSuccessResponse('Course added successfully.', $request->all());
-
-            // return $request->all();
-            // return $request->curriculum_image;
-            // return 423423;
-
             // Save new file
             $path = public_path('uploads/course');
             // if (!file_exists($path)) {
@@ -201,37 +195,13 @@ class CourseController extends Controller
 
             //store course curriculum
             $course_curriculum = json_decode($request->course_curriculum);
-            $request->curriculum_image = json_decode($request->curriculum_image);
-
-            // $course_curriculum = $request->course_curriculum;
-            // $request->curriculum_image = json_encode($request->curriculum_image);
-            // $request->curriculum_image = json_decode($request->curriculum_image);
-            // return sendSuccessResponse('Course added successfully new12.', $request->curriculum_image);
-
-
-            // $images = json_decode($request->curriculum_image, true);
-            // $course_curriculum = $request->course_curriculum;
-            // $images = $request->curriculum_image;
-            // foreach ($request->file('curriculum_image') as $index => $image) {
-
-            //     // $path = $image->store('public/curriculum_images');
-            //     $path = $image->store('curriculum_images');
-            //     // return sendSuccessResponse('Course added successfully332.', $path);
-
-            //     // // Optional: save path with the related curriculum title
-            //     // Curriculum::create([
-            //     //     'title' => $curriculums[$index] ?? 'Untitled',
-            //     //     'image_path' => $path,
-            //     // ]);
-            // }
-            // $carImg = json_decode($request->curriculum_image, true);
-            // return sendSuccessResponse('Course add successfully636.', $request->curriculum_image);
 
             $course_curriculum_data = [];
             foreach($course_curriculum as $key=>$record){
+                // $curriculum_data['curriculum'] = $record;
                 $curriculum_data['course_id'] = $course_id;
-                // $curriculum_data['curriculum'] = $record->curriculum;
-                $curriculum_data['curriculum'] = $record;
+                $curriculum_data['curriculum'] = $record->curriculum;
+                $curriculum_data['image'] = $record->image;
                 $curriculum_data['created_at'] = \Carbon\Carbon::now();
                 $curriculum_data['updated_at'] = \Carbon\Carbon::now();
 
@@ -240,23 +210,46 @@ class CourseController extends Controller
                 // $dtls["size"] = $file->getSize();
                 // return sendSuccessResponse('Course add successfully636.', $dtls);
 
-                //upload image
-                $fileName = null;
-                $filePath = null;
-                if ($request->hasFile('curriculum_image.' . $key)) {
-                    $file = $request->file('curriculum_image.' . $key);
-                    $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
-                    $file->move($path, $fileName);
-                    $filePath = "uploads/course/" . $fileName;
-                }
-                // else{
-                //     $filePath = "doc_not_found";
+                // //upload image
+                // $fileName = null;
+                // $filePath = null;
+                // if ($request->hasFile('curriculum_image.' . $key)) {
+                //     $file = $request->file('curriculum_image.' . $key);
+                //     $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
+                //     $file->move($path, $fileName);
+                //     $filePath = "uploads/course/" . $fileName;
                 // }
-                $curriculum_data['image'] = $filePath;
+                // // else{
+                // //     $filePath = "doc_not_found";
+                // // }
+                // $curriculum_data['image'] = $filePath;
 
 
                 $course_curriculum_data[] = $curriculum_data;
             }
+
+            // foreach($course_curriculum as $key=>$record){
+            //     $curriculum_data['course_id'] = $course_id;
+            //     $curriculum_data['curriculum'] = $record->curriculum;
+            //     $curriculum_data['created_at'] = \Carbon\Carbon::now();
+            //     $curriculum_data['updated_at'] = \Carbon\Carbon::now();
+
+            //     //upload image
+            //     $fileName = null;
+            //     $filePath = null;
+            //     if ($request->hasFile("course_curriculum.{$key}.image")) {
+            //         $file       = $request->file("course_curriculum.{$key}.image");
+            //         $fileName   = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
+            //         $file->move($path, $fileName);
+            //         $filePath   = "uploads/course/{$fileName}";
+            //     }
+            //     else{
+            //         $filePath = "not found";
+            //     }
+
+            //     $curriculum_data['image'] = $filePath;
+            //     $course_curriculum_data[] = $curriculum_data;
+            // }
 
             CourseCurriculum::insert($course_curriculum_data);
 
@@ -274,7 +267,6 @@ class CourseController extends Controller
             }
 
             CourseTopic::insert($course_topics_data);
-
 
             return sendSuccessResponse('Course added successfully.', $course_id);
         } catch (\Throwable $th) {
@@ -547,34 +539,35 @@ class CourseController extends Controller
                 CourseCurriculum::where('course_id', $id)->delete();
                 $course_curriculum = json_decode($request->course_curriculum);
                 // $course_curriculum = $request->course_curriculum;
-                $request->curriculum_image = json_decode($request->curriculum_image);
+                // $request->curriculum_image = json_decode($request->curriculum_image);
                 $course_curriculum_data = [];
 
                 foreach($course_curriculum as $key=>$record){
 
                     $curriculum_data['course_id'] = $id;
-                    // $curriculum_data['curriculum'] = $record->curriculum;
-                    $curriculum_data['curriculum'] = $record;
+                    $curriculum_data['curriculum'] = $record->curriculum;
+                    $curriculum_data['image'] = $record->image;
+                    // $curriculum_data['curriculum'] = $record;
                     $curriculum_data['created_at'] = \Carbon\Carbon::now();
                     $curriculum_data['updated_at'] = \Carbon\Carbon::now();
 
-                    //upload image
-                    $fileName = null;
-                    $filePath = null;
-                    // $tempFile = $record->curriculum_image;
-                    if ($request->hasFile('curriculum_image.' . $key)) {
-                        $file = $request->file('curriculum_image.' . $key);
-                        $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
-                        $file->move($path, $fileName);
-                        $filePath = "uploads/course/" . $fileName;
-                    }
-                    else{
-                        if($request->input('curriculum_image.' . $key)){
-                            //has old file path
-                            $filePath = $request->input('curriculum_image.' . $key);
-                        }
-                    }
-                    $curriculum_data['image'] = $filePath;
+                    // //upload image
+                    // $fileName = null;
+                    // $filePath = null;
+                    // // $tempFile = $record->curriculum_image;
+                    // if ($request->hasFile('curriculum_image.' . $key)) {
+                    //     $file = $request->file('curriculum_image.' . $key);
+                    //     $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
+                    //     $file->move($path, $fileName);
+                    //     $filePath = "uploads/course/" . $fileName;
+                    // }
+                    // else{
+                    //     if($request->input('curriculum_image.' . $key)){
+                    //         //has old file path
+                    //         $filePath = $request->input('curriculum_image.' . $key);
+                    //     }
+                    // }
+                    // $curriculum_data['image'] = $filePath;
 
 
                     $course_curriculum_data[] = $curriculum_data;
@@ -736,4 +729,296 @@ class CourseController extends Controller
             return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
         }
     }
+
+    public function uploadCourseCurriculumImage(Request $request): JsonResponse
+    {
+        try {
+
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'image' => 'required',
+                ]
+            );
+
+            if ($validator->fails()) {
+                return sendErrorResponse('Validation Error.', $validator->errors(), 400);
+            }
+
+            // Save new file
+            $path = public_path('uploads/course');
+            // if (!file_exists($path)) {
+            //     mkdir($path, 0777, true);
+            // }
+            //save image
+            $fileName = null;
+            $filePath = null;
+            if ($request->hasFile('image')) {
+                $fileName = time() . rand(1000, 9999) . "_" . $request->file('image')->getClientOriginalName();
+                $request->image->move($path, $fileName);
+                $filePath = "uploads/course/" . $fileName;
+            }
+
+            return sendSuccessResponse('Image uploaded successfully.', $filePath);
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
+    // //back up
+    // public function add(Request $request): JsonResponse
+    // {
+    //     try {
+
+    //         $validator = Validator::make(
+    //             $request->all(),
+    //             [
+    //                 'category_id' => 'required|integer',
+    //                 'skills' => 'required',
+    //                 'course_name' => 'required',
+    //                 // 'duration_value' => 'required',
+    //                 // 'duration_unit' => 'required',
+    //                 // 'default img'
+    //             ]
+    //         );
+
+    //         if ($validator->fails()) {
+    //             return sendErrorResponse('Validation Error.', $validator->errors(), 400);
+    //         }
+
+    //         // return sendSuccessResponse('Course added successfully.', $request->all());
+
+    //         // return $request->all();
+    //         // return $request->curriculum_image;
+    //         // return 423423;
+
+    //         // Save new file
+    //         $path = public_path('uploads/course');
+    //         // if (!file_exists($path)) {
+    //         //     mkdir($path, 0777, true);
+    //         // }
+    //         //save course_logo
+    //         $fileName = null;
+    //         $courseLogoFilePath = null;
+    //         if ($request->hasFile('course_logo')) {
+    //             $fileName = time() . rand(1000, 9999) . "_" . $request->file('course_logo')->getClientOriginalName();
+    //             $request->course_logo->move($path, $fileName);
+    //             $courseLogoFilePath = "uploads/course/" . $fileName;
+    //         }
+
+    //         $fileName = null;
+    //         $courseSmallIconFilePath = null;
+    //         if ($request->hasFile('course_small_icon')) {
+    //             $fileName = time() . rand(1000, 9999) . "_" . $request->file('course_small_icon')->getClientOriginalName();
+    //             $request->course_small_icon->move($path, $fileName);
+    //             $courseSmallIconFilePath = "uploads/course/" . $fileName;
+    //         }
+
+    //         // //save overview_img
+    //         // $fileName = null;
+    //         // $courseOverviewImgFilePath = null;
+    //         // if ($request->hasFile('overview_img')) {
+    //         //     $fileName = time() . rand(1000, 9999) . "_" . $request->file('overview_img')->getClientOriginalName();
+    //         //     $request->overview_img->move($path, $fileName);
+    //         //     $courseOverviewImgFilePath = "uploads/course/" . $fileName;
+    //         // }
+
+    //         $randNo = rand(1000, 9999);
+    //         $slug = $this->generateSlug($request->course_name, 'Course', $randNo);
+
+    //         $insertedData = [
+    //             'category_id' => $request->category_id,
+    //             // 'skill_id' => $request->skill,
+    //             'course_name' => $request->course_name,
+    //             'duration_value' => $request->duration_value,
+    //             'duration_unit' => $request->duration_unit,
+    //             'demo_video_url' => $request->demo_video_url,
+    //             'course_desc' => $request->course_desc,
+    //             'course_overview' => $request->course_overview,
+    //             // 'overview_img' => $courseOverviewImgFilePath,
+    //             'course_content' => $request->course_content,
+    //             'course_logo' => $courseLogoFilePath,
+    //             'course_small_icon' => $courseSmallIconFilePath,
+    //             'rating' => $request->rating,
+    //             'total_students_contacted' => $request->total_students_contacted,
+    //             'status' => $request->status,
+    //             'is_trending' => $request->is_trending,
+    //             'is_popular' => $request->is_popular,
+    //             'is_free' => $request->is_free,
+    //             'mete_title' => $request->mete_title,
+    //             'meta_description' => $request->meta_description,
+    //             'meta_keyword' => $request->meta_keyword,
+    //             'search_tag' => $request->search_tag,
+    //             'seo1' => $request->seo1,
+    //             'seo2' => $request->seo2,
+    //             'seo3' => $request->seo3,
+    //             'slug' => $slug,
+    //         ];
+
+    //         //assign empty string if demo_video_url is null
+    //         if($request->demo_video_url == null){
+    //             $insertedData['demo_video_url'] = "";
+    //         }
+    //         else{
+    //             $insertedData['demo_video_url'] = $request->demo_video_url;
+    //         }
+
+    //         $storeInfo = Course::create($insertedData);
+    //         $course_id = $storeInfo->id;
+
+    //         //store skills
+    //         if ($request->skills && count(json_decode($request->skills)) > 0) {
+    //             $skillArr = json_decode($request->skills);
+
+    //             $insertedData = [];
+    //             foreach ($skillArr as $x) {
+    //                 $insertedData[] = [
+    //                     'course_id' => $course_id,
+    //                     'skill_id' => $x,
+    //                     'created_at' => \Carbon\Carbon::now(),
+    //                     'updated_at' => \Carbon\Carbon::now(),
+    //                 ];
+    //             }
+    //             CoursesSkill::insert($insertedData);
+    //         }
+
+    //         // $user_details = DB::table('users')->where('id', $request->user_id)->first();
+    //         // if ($user_details) {
+    //             //     $email = $user_details->email;
+    //             //     $name = $user_details->f_name;
+
+    //             //     $data = array("email" => $email, "name" => $name, 'course_name' => $request->course_name);
+    //             //     // Send email
+    //             //     Mail::send('email.courseListing', $data, function ($message) use ($email) {
+    //             //         $message->to($email) // Use the recipient's email
+    //             //             ->subject('Your Course Listing is Under Review on FindMyGuru');
+    //             //         $message->from(env('MAIL_FROM_ADDRESS'), "Find My Guru");
+    //             //     });
+
+    //             //     $date = \Carbon\Carbon::now();
+    //             //     $adminData = array("name" => $name, "course_title" => $request->course_name, "course_description" => $request->course_content, "course_fee" => $request->fee, "duration" => $request->duration_value, 'duration_unit' => $request->duration_unit, "teaching_mode" => $request->teaching_mode, "date_added" => $date);
+    //             //     $adminEmail = env('ADMIN_MAIL');
+    //             //     // Send email
+    //             //     Mail::send('email.admin.courseAdditionAlert', $adminData, function ($message) use ($adminEmail) {
+    //             //         $message->to($adminEmail) // Use the recipient's email
+    //             //             ->subject('New Course Added by Tutor on FindMyGuru');
+    //             //         $message->from(env('MAIL_FROM_ADDRESS'), "Find My Guru");
+    //             //     });
+    //         // }
+
+
+    //         //store course curriculum
+    //         // $course_curriculum = json_decode($request->course_curriculum, true);
+    //         // $request->course_curriculum = json_decode($request->course_curriculum, true);
+    //         // $request->curriculum_image = json_decode($request->curriculum_image);
+    //         // $course_curriculum = $request->course_curriculum;
+    //         // $course_curriculum = json_encode($request->course_curriculum);
+    //         $course_curriculum = json_decode($request->course_curriculum);
+    //         // $course_curriculum = $request->course_curriculum;
+    //         // return sendSuccessResponse('Course added successfully.', $request->course_curriculum);
+    //         // return sendSuccessResponse('Course added successfully.', $course_curriculum);
+
+
+    //         $course_curriculum_data = [];
+    //         // foreach($course_curriculum as $key=>$record){
+    //         //     $curriculum_data['course_id'] = $course_id;
+    //         //     // $curriculum_data['curriculum'] = $record->curriculum;
+    //         //     $curriculum_data['curriculum'] = $record;
+    //         //     $curriculum_data['created_at'] = \Carbon\Carbon::now();
+    //         //     $curriculum_data['updated_at'] = \Carbon\Carbon::now();
+
+    //         //     // $file = $request->file('curriculum_image.' . 0);
+    //         //     // $dtls["mimeType"] = $file->getMimeType();
+    //         //     // $dtls["size"] = $file->getSize();
+    //         //     // return sendSuccessResponse('Course add successfully636.', $dtls);
+
+    //         //     //upload image
+    //         //     $fileName = null;
+    //         //     $filePath = null;
+    //         //     if ($request->hasFile('curriculum_image.' . $key)) {
+    //         //         $file = $request->file('curriculum_image.' . $key);
+    //         //         $fileName = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
+    //         //         $file->move($path, $fileName);
+    //         //         $filePath = "uploads/course/" . $fileName;
+    //         //     }
+    //         //     // else{
+    //         //     //     $filePath = "doc_not_found";
+    //         //     // }
+    //         //     $curriculum_data['image'] = $filePath;
+
+
+    //         //     $course_curriculum_data[] = $curriculum_data;
+    //         // }
+
+    //         // return sendSuccessResponse('Course added successfully.', $course_curriculum);
+
+    //         // foreach($request->course_curriculum as $key=>$record){
+    //         foreach($course_curriculum as $key=>$record){
+
+    //             $curriculum_data['course_id'] = $course_id;
+    //             $curriculum_data['curriculum'] = $record->curriculum;
+    //             $curriculum_data['created_at'] = \Carbon\Carbon::now();
+    //             $curriculum_data['updated_at'] = \Carbon\Carbon::now();
+
+    //             //upload image
+    //             $fileName = null;
+    //             $filePath = null;
+    //             if ($request->hasFile("course_curriculum.{$key}.image")) {
+    //             // if ($request->hasFile($record['image'])) {
+    //             // if ($request->hasFile('course_curriculum.' . $key . '.image')) {
+    //                 // return sendErrorResponse('has file.', $request->all(), 500);
+
+    //                 $file       = $request->file("course_curriculum.{$key}.image");
+    //                 $fileName   = time() . rand(1000, 9999) . '_' . $file->getClientOriginalName();
+    //                 $file->move($path, $fileName);
+    //                 $filePath   = "uploads/course/{$fileName}";
+    //             }
+    //             else{
+    //                 $filePath = "not found";
+    //                 // return sendErrorResponse('no file.', $request->course_curriculum, 500);
+    //                 // return sendErrorResponse('Something went wrong13123.', $request->file("course_curriculum.{$key}.image"), 500);
+    //                 // return sendErrorResponse('Something went wrong13123.', $course_curriculum[$key]['curriculum'], 500);
+    //             }
+
+    //             // return sendErrorResponse('Something went wrong.', "course_curriculum.{$key}.image", 500);
+    //             // return sendErrorResponse('Something went wrong.', $request->file("course_curriculum.{$key}.image"), 500);
+
+
+    //             // if (isset($record['image']) && $record['image']) {
+    //             //     return sendErrorResponse('got image.', $record['image'], 500);
+
+    //             //     $filePath = $record['image']->store('uploads/course', 'public');
+    //             // }
+
+    //             // return sendErrorResponse('no image.', "no image", 500);
+
+    //             $curriculum_data['image'] = $filePath;
+    //             $course_curriculum_data[] = $curriculum_data;
+    //         }
+
+    //         CourseCurriculum::insert($course_curriculum_data);
+
+    //         //store course topics
+    //         $course_topics = json_decode($request->course_topics);
+    //         $course_topics_data = [];
+    //         foreach($course_topics as $record){
+    //             $topic_data['course_id'] = $course_id;
+    //             $topic_data['label'] = $record->label;
+    //             $topic_data['desc'] = $record->desc;
+    //             $topic_data['created_at'] = \Carbon\Carbon::now();
+    //             $topic_data['updated_at'] = \Carbon\Carbon::now();
+
+    //             $course_topics_data[] = $topic_data;
+    //         }
+
+    //         CourseTopic::insert($course_topics_data);
+
+    //         return sendErrorResponse('Something went wrong.', "end", 500);
+
+    //         return sendSuccessResponse('Course added successfully.', $course_id);
+    //     } catch (\Throwable $th) {
+    //         // Log::error('Course added error: ' . $th->getMessage());
+    //         return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+    //     }
+    // }
 }
