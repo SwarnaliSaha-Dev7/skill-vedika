@@ -730,6 +730,42 @@ class CourseController extends Controller
         }
     }
 
+    public function studentContactBulkDestroy(Request $request): JsonResponse
+    {
+        try {
+
+            $validator = Validator::make(
+                $request->all(),
+                [
+                    'id_list' => 'required',
+                ]
+            );
+
+            if ($validator->fails()) {
+                return sendErrorResponse('Validation Error.', $validator->errors(), 400);
+            }
+
+            if($request->id_list == "all"){
+                CourseContact::truncate();
+                return sendSuccessResponse('All contact details deleted successfully.', '');
+            }
+            else{
+                $id_list = json_decode($request->id_list, true);
+
+                if(is_array($id_list) && count($id_list)){
+                    CourseContact::whereIn('id', $id_list)->delete();
+                    return sendSuccessResponse('Selected contact details deleted successfully.', '');
+                }
+                else{
+                    return sendErrorResponse('ID list not found.', "", 500);
+                }
+            }
+
+        } catch (\Throwable $th) {
+            return sendErrorResponse('Something went wrong.', $th->getMessage(), 500);
+        }
+    }
+
     public function uploadCourseCurriculumImage(Request $request): JsonResponse
     {
         try {

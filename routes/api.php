@@ -126,6 +126,7 @@ Route::prefix('admin')->group(function () {
         Route::get('/course/student-contact/listing', [AdminCourseController::class, 'studentContactList']);
         Route::get('/course/student-contact/view/{id}', [AdminCourseController::class, 'studentContactView']);
         Route::delete('/course/student-contact/delete/{id}', [AdminCourseController::class, 'studentContactDestroy']);
+        Route::post('/course/student-contact/bulk-delete', [AdminCourseController::class, 'studentContactBulkDestroy']);
 
         //=================== Course Reviews =========================
         Route::post('/course/review/add', [CourseReviewController::class, 'store']);
