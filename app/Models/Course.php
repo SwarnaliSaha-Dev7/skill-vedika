@@ -68,7 +68,7 @@ class Course extends Model
 
     public function courseTopics(): HasMany
     {
-        return $this->hasMany(CourseTopic::class);
+        return $this->hasMany(CourseTopic::class)->orderBy('id', 'asc');
     }
 
     public function courseReviews(): HasMany
